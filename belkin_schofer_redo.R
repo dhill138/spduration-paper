@@ -12,64 +12,100 @@ setwd(wd)
 
 library(spduration)
 library(foreign)
+library(xtable)
 library(separationplot)
 
-coup.data<-read.dta("Belkin_Schofer_Data/BelkinSchoferTable4.dta")
+coup.data<-read.dta("BelkinSchoferTable4.dta")
 coup.data$coup<-as.numeric(coup.data$coup)-1
 
-### replicate Column 4 of Table 4
+### replicate Column 4 of Table 4 to make sure the data are ok
 summary(rep.model<-glm(coup~couprisk+recentcoups+wealth+africa+eurnam+samerica+camerica+instab+milreg+regconf+rwar,data=coup.data,family="binomial"))
-
-### without BDM et al previous coup indicator
-summary(rep.model<-glm(coup~couprisk+wealth+africa+eurnam+
-		samerica+camerica+instab+milreg+regconf+rwar,data=coup.data,family="binomial"))
 
 ### split-pop models
 new.coup.data<-add_duration(coup.data, "coup", unitID="countryid", tID="year", freq="year")
+colnames(new.coup.data)[3:14]<-c("Coup.Risk","Recent.Coups","Recent.War","Military.Regime","GDP.cap.","Instability","Coup","Africa","Europe.North.Am.","South.Am.","Central.Am.","Regional.Conflict")
 
-summary(weib.model<-spdur(duration~milreg+instab+rwar+regconf,
-		atrisk~couprisk+wealth+milreg+rwar+regconf+samerica+camerica,data=new.coup.data))
+summary(weib.model<-spdur(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
+		atrisk~Coup.Risk+GDP.cap.+Military.Regime+
+		Recent.War+Regional.Conflict+
+		South.Am.+Central.Am.,data=new.coup.data))
+xtable(weib.model,caption="Coup model with Weibull hazard")
 
-summary(loglog.model<-spdur(duration~milreg+instab+rwar+regconf,
-		atrisk~couprisk+wealth+milreg+rwar+regconf+samerica+camerica,data=new.coup.data,distr="loglog"))
+summary(loglog.model<-spdur(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
+		atrisk~Coup.Risk+GDP.cap.+Military.Regime+
+		Recent.War+Regional.Conflict+
+		South.Am.+Central.Am.,data=new.coup.data,distr="loglog"))
+xtable(loglog.model,caption="Coup model with log-logistic hazard")
 
-### re-estimate logit model excluding ongoing cases
-new.coup.data$coup[is.na(new.coup.data$duration)]<-NA
-
-summary(rep.model<-glm(coup~couprisk+wealth+samerica+camerica+instab+milreg+
-		regconf+rwar,data=new.coup.data,family="binomial"))
-preds<-new.coup.data[-rep.model$na.action,]
-preds$logit<-predict(rep.model,type="response")
-
-### compare in-sample predictions, AIC
-dev.new(width=9,height=5)
-par(mfrow=c(3,1),mar=c(3,3,3,3))
-separationplot(preds$logit,preds$coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
+### use plot function to compare in-sample predictions 
+#pdf(file="in-sample.pdf",width=9,height=3)
+dev.new(width=9,height=3)
+par(mfrow=c(2,1),mar=c(2,2,2,2))
 plot(weib.model,endSpellOnly=F)
 plot(loglog.model,endSpellOnly=F)
-AIC(rep.model)
+#dev.off()
+
+### AIC and BIC
 AIC(weib.model)
 AIC(loglog.model)
+BIC(weib.model)
+BIC(loglog.model)
 
-### compare out-of-sample predictions
-coup.train<-coup.data[coup.data$year<1999,]
-coup.train<-add_duration(coup.train, "coup", unitID="countryid", tID="year", freq="year")
-
-coup.test<-add_duration(coup.data, "coup", unitID="countryid", tID="year", freq="year")
-coup.test<-coup.test[coup.test$year==1999,]
+### use Crisp wrapper to compare out-of-sample predictions
+coup.train<-new.coup.data[coup.data$year<1999,]
+coup.test<-new.coup.data[new.coup.data$year==1999,]
 coup.test<-na.omit(coup.test)
 
-weib.model2<-spdurCrisp(duration~milreg+instab+rwar+regconf,atrisk~couprisk+wealth+
-		milreg+rwar+regconf+samerica+camerica,
-		last='end.spell',train=coup.train,test=coup.test,pred=coup.test)
+weib.model2<-spdurCrisp(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
+		atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
+		South.Am.+Central.Am.,
+		last='end.spell',train=coup.train,test=coup.test,pred=coup.test,stat='conditional risk')
 weib.preds<-as.numeric(weib.model2$test.p)
 
-loglog.model2<-spdurCrisp(duration~milreg+instab+rwar+regconf,atrisk~couprisk+wealth+
-	milreg+rwar+regconf+samerica,
-	last='end.spell',train=coup.train,test=coup.test,pred=coup.test,distr="loglog",iter=300)
+loglog.model2<-spdurCrisp(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
+		atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
+		South.Am.,
+		last='end.spell',train=coup.train,test=coup.test,pred=coup.test,,stat='conditional risk',distr="loglog")
 loglog.preds<-as.numeric(loglog.model2$test.p)
 
-dev.new(width=9,height=5)
-par(mfrow=c(3,1),mar=c(3,3,3,3))
-separationplot(weib.preds,coup.test$coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
-separationplot(loglog.preds,coup.test$coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
+#pdf(file="out-of-sample.pdf",width=9,height=3)
+dev.new(width=9,height=3)
+par(mfrow=c(2,1),mar=c(2,2,2,2))
+separationplot(weib.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
+separationplot(loglog.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
+#dev.off()
+
+### plot the hazard rate
+
+# data
+dur.dat<-weib.model$mf.dur
+risk.dat<-weib.model$mf.risk 
+ti<-seq(1:max(dur.dat[, 1]))
+X<-cbind(1, dur.dat[ ,2:dim(dur.dat)[2]])
+Z<-cbind(1, risk.dat[ ,2:dim(risk.dat)[2]])
+
+# parameters
+beta<-weib.model$coef[1:ncol(X)]
+gamma<-weib.model$coef[(ncol(X) + 1):(ncol(X) + ncol(Z))]
+a<-weib.model$coef[ncol(X) + ncol(Z) + 1]
+alpha<-exp(-a)
+
+# mean of X and Z
+#mean.X<-apply(X,2,mean)
+#mean.Z<-apply(Z,2,mean)
+mean.X<-c(1,1,2,0,0)
+mean.Z<-c(1,-.3,7.5,1,0,0,0,0)
+
+# predictions
+lambda<-pmax(1e-10, exp(-mean.X %*% beta))
+cure<-1 - plogis(mean.Z %*% gamma)
+
+preds<-vector(length=length(ti))
+for(i in 1:length(ti)){
+	st<-exp(-(lambda * ti[i])^alpha)
+	cure.t<-cure / pmax(1e-10, (st + cure * (1 - st)))
+	atrisk.t<-1 - cure.t
+	ft<-lambda * alpha * (lambda * ti[i])^(alpha-1) * exp(-(lambda * ti[i])^alpha)
+	preds[i]<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+}
+plot(ti,preds)
