@@ -77,35 +77,32 @@ separationplot(loglog.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2
 
 ### plot the hazard rate
 
-# data
-dur.dat<-weib.model$mf.dur
-risk.dat<-weib.model$mf.risk 
-ti<-seq(1:max(dur.dat[, 1]))
-X<-cbind(1, dur.dat[ ,2:dim(dur.dat)[2]])
-Z<-cbind(1, risk.dat[ ,2:dim(risk.dat)[2]])
+plot.hazard<-function(thing){
+	dur.dat<-thing$mf.dur
+	risk.dat<-thing$mf.risk 
+	ti<-seq(1:max(dur.dat[, 1]))
+	X<-cbind(1, dur.dat[ ,2:dim(dur.dat)[2]])
+	Z<-cbind(1, risk.dat[ ,2:dim(risk.dat)[2]])
 
-# parameters
-beta<-weib.model$coef[1:ncol(X)]
-gamma<-weib.model$coef[(ncol(X) + 1):(ncol(X) + ncol(Z))]
-a<-weib.model$coef[ncol(X) + ncol(Z) + 1]
-alpha<-exp(-a)
+	beta<-weib.model$coef[1:ncol(X)]
+	gamma<-weib.model$coef[(ncol(X) + 1):(ncol(X) + ncol(Z))]
+	a<-weib.model$coef[ncol(X) + ncol(Z) + 1]
+	alpha<-exp(-a)
 
-# mean of X and Z
-#mean.X<-apply(X,2,mean)
-#mean.Z<-apply(Z,2,mean)
-mean.X<-c(1,1,2,0,0)
-mean.Z<-c(1,-.3,7.5,1,0,0,0,0)
+	mean.X<-apply(X,2,mean)
+	mean.Z<-apply(Z,2,mean)
 
-# predictions
-lambda<-pmax(1e-10, exp(-mean.X %*% beta))
-cure<-1 - plogis(mean.Z %*% gamma)
+	lambda<-pmax(1e-10, exp(-mean.X %*% beta))
+	cure<-1 - plogis(mean.Z %*% gamma)
 
-preds<-vector(length=length(ti))
-for(i in 1:length(ti)){
-	st<-exp(-(lambda * ti[i])^alpha)
-	cure.t<-cure / pmax(1e-10, (st + cure * (1 - st)))
-	atrisk.t<-1 - cure.t
-	ft<-lambda * alpha * (lambda * ti[i])^(alpha-1) * exp(-(lambda * ti[i])^alpha)
-	preds[i]<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+	preds<-vector(length=length(ti))
+	for(i in 1:length(ti)){
+		st<-exp(-(lambda * ti[i])^alpha)
+		cure.t<-cure / pmax(1e-10, (st + cure * (1 - st)))
+		atrisk.t<-1 - cure.t
+		ft<-lambda * alpha * (lambda * ti[i])^(alpha-1) * exp(-(lambda * ti[i])^alpha)
+		preds[i]<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+	}
+plot(ti,preds,type="l",xlab="Time",ylab="Conditional Hazard")
 }
-plot(ti,preds)
+
