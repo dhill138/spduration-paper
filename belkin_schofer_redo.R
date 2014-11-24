@@ -6,7 +6,8 @@ wd <- switch(user,
              andybega="~/Work/spduration-paper",
              danielhill="/Users/danielhill/Documents/spduration-paper")
 dropbox <- switch(user,
-                  andybega="~/Dropbox/Work/gallium")
+                  andybega="~/Dropbox/Work/gallium/data",
+                  danielhill="")
 setwd(wd)
 
 
@@ -15,12 +16,7 @@ library(foreign)
 library(xtable)
 library(separationplot)
 
-<<<<<<< Updated upstream
-coup.data<-read.dta("BelkinSchoferTable4.dta")
-=======
-coup.data <- read.dta("Belkin_Schofer_Data/BelkinSchoferTable4.dta")
-coup.data <- read.dta(file.path(dropbox, "data/BelkinSchoferTable4.dta"))
->>>>>>> Stashed changes
+coup.data <- read.dta(file.path(dropbox, "BelkinSchoferTable4.dta"))
 coup.data$coup<-as.numeric(coup.data$coup)-1
 
 ### replicate Column 4 of Table 4 to make sure the data are ok
@@ -85,7 +81,7 @@ separationplot(loglog.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2
 plot.hazard<-function(thing){
 	dur.dat<-thing$mf.dur
 	risk.dat<-thing$mf.risk 
-	ti<-seq(1:max(dur.dat[, 1]))
+	ti<-seq(1, max(dur.dat[, 1])*1.2, length.out=100)
 	X<-cbind(1, dur.dat[ ,2:dim(dur.dat)[2]])
 	Z<-cbind(1, risk.dat[ ,2:dim(risk.dat)[2]])
 
@@ -111,3 +107,13 @@ plot.hazard<-function(thing){
 plot(ti,preds,type="l",xlab="Time",ylab="Conditional Hazard")
 }
 
+# playing around
+shape <- exp(weib.model$coefficients["log(alpha)"])
+t <- seq(1, 35, length.out=200)
+
+hist(new.coup.data$duration[new.coup.data$failure==1], breaks=35, freq=F)
+lines(t, dweibull(t, shape), col="orange", lwd=2)
+lines(t, dweibull(t, 0.2), col="cyan", lwd=2)
+lines(t, dweibull(t, 2), col="magenta", lwd=2)
+
+plot(t, dweibull(t, shape)/pweibull(t, shape), type="l")
