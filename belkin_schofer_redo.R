@@ -4,7 +4,7 @@
 user <- Sys.info()[["user"]]
 wd <- switch(user,
              andybega="~/Work/spduration-paper",
-             danielhill="/Users/danielhill/Documents/spduration")
+             danielhill="/Users/danielhill/Documents/spduration-paper")
 dropbox <- switch(user,
                   andybega="~/Dropbox/Work/gallium")
 setwd(wd)
@@ -15,7 +15,12 @@ library(foreign)
 library(xtable)
 library(separationplot)
 
+<<<<<<< Updated upstream
 coup.data<-read.dta("BelkinSchoferTable4.dta")
+=======
+coup.data <- read.dta("Belkin_Schofer_Data/BelkinSchoferTable4.dta")
+coup.data <- read.dta(file.path(dropbox, "data/BelkinSchoferTable4.dta"))
+>>>>>>> Stashed changes
 coup.data$coup<-as.numeric(coup.data$coup)-1
 
 ### replicate Column 4 of Table 4 to make sure the data are ok
