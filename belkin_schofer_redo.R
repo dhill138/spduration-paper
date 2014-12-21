@@ -12,13 +12,13 @@ setwd(wd)
 
 
 library(spduration)
-library(survival)
+#library(survival)
 library(foreign)
 library(xtable)
 library(separationplot)
 
 #coup.data <- read.dta(file.path(dropbox, "BelkinSchoferTable4.dta"))
-coup.data <- read.dta(file="Belkin_Schofer_Data/BelkinSchoferTable4.dta")
+coup.data <- read.dta(file="BelkinSchoferTable4.dta")
 coup.data$coup<-as.numeric(coup.data$coup)-1
 
 ### replicate Column 4 of Table 4 to make sure the data are ok
@@ -41,14 +41,14 @@ summary(loglog.model<-spdur(duration~Military.Regime+Instability+Recent.War+Regi
 xtable(loglog.model,caption="Coup model with log-logistic hazard")
 
 ### compare with survreg. They're not really close. But survreg doesn't allow for time-varying covariates.
-survival.data<-new.coup.data[new.coup.data$end.spell==1&!is.na(new.coup.data$end.spell),]
-survival<-Surv(survival.data$duration,survival.data$failure)
+#survival.data<-new.coup.data[new.coup.data$end.spell==1&!is.na(new.coup.data$end.spell),]
+#survival<-Surv(survival.data$duration,survival.data$failure)
 
-surv.weib.model<-survreg(survival~Military.Regime+Instability+Recent.War+Regional.Conflict,data=survival.data)
-weib.model$base
+#surv.weib.model<-survreg(survival~Military.Regime+Instability+Recent.War+Regional.Conflict,data=survival.data)
+#weib.model$base
 
-surv.loglog.model<-survreg(survival~Military.Regime+Instability+Recent.War+Regional.Conflict,data=survival.data,dist="loglogistic")
-loglog.model$base
+#surv.loglog.model<-survreg(survival~Military.Regime+Instability+Recent.War+Regional.Conflict,data=survival.data,dist="loglogistic")
+#loglog.model$base
 
 ### use plot function to compare in-sample predictions 
 #pdf(file="in-sample.pdf",width=9,height=3)
@@ -90,7 +90,7 @@ separationplot(loglog.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2
 
 ### plot the hazard rate
 
-plot.hazard<-function(thing,xvals='mean',zvals='mean'){
+plot.hazard<-function(thing,xvals=NULL,zvals=NULL){
 	dur.dat<-thing$mf.dur
 	risk.dat<-thing$mf.risk 
 	ti<-seq(1, max(dur.dat[, 1])*1.2, length.out=100)
@@ -98,26 +98,30 @@ plot.hazard<-function(thing,xvals='mean',zvals='mean'){
 	Z<-cbind(1, risk.dat[ ,2:dim(risk.dat)[2]])
 
 	beta<-thing$coef[1:ncol(X)]
+	beta.vcv<-thing$vcv[1:ncol(X),1:ncol(X)]
 	gamma<-thing$coef[(ncol(X) + 1):(ncol(X) + ncol(Z))]
+	gamma.vcv<-thing$vcv[(ncol(X) + 1):(ncol(X) + ncol(Z)),(ncol(X) + 1):(ncol(X) + ncol(Z))]
 	a<-thing$coef[ncol(X) + ncol(Z) + 1]
 	alpha<-exp(-a)
 
-	if (xvals=='mean'){
+	if (is.null(xvals)){
 		X.vals<-apply(X,2,mean)		
 		} else{
 		  X.vals<-c(1,xvals)			
 		}
 	
-	if (zvals=='mean'){
+	if (is.null(zvals)){
 		Z.vals<-apply(Z,2,mean)
 		} else{
 		  Z.vals<-c(1,zvals)
 		}
-		
-	lambda<-pmax(1e-10, exp(-X.vals %*% beta))
-	cure<-1 - plogis(Z.vals %*% gamma)
+	
+	Beta<-mvrnorm(n=1000,mu=beta,Sigma=beta.vcv)	
+	lambda<-pmax(1e-10, exp(-X.vals %*% t(Beta)))
+	Gamma<-mvrnorm(n=1000,mu=gamma,Sigma=gamma.vcv)
+	cure<-1 - plogis(Z.vals %*% t(Gamma))
 
-	preds<-vector(length=length(ti))
+	preds<-matrix(nrow=length(ti),ncol=3)
 
 	if (thing$distr=="weibull"){
 		for(i in 1:length(ti)){
@@ -125,7 +129,10 @@ plot.hazard<-function(thing,xvals='mean',zvals='mean'){
 			cure.t<-cure / pmax(1e-10, (st + cure * (1 - st)))
 			atrisk.t<-1 - cure.t
 			ft<-lambda * alpha * (lambda * ti[i])^(alpha-1) * exp(-(lambda * ti[i])^alpha)
-			preds[i]<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+			pr<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+			preds[i,1]<-mean(pr)
+			preds[i,2]<-quantile(pr,probs=0.05)
+			preds[i,3]<-quantile(pr,probs=0.95)
 		}
 	}
 	
@@ -135,11 +142,16 @@ plot.hazard<-function(thing,xvals='mean',zvals='mean'){
 			cure.t<-cure / pmax(1e-10, (st + cure * (1 - st)))
 			atrisk.t<-1 - cure.t
 			ft<-(lambda * alpha * (lambda * ti[i])^(alpha-1)) / ((1 + (lambda * ti[i])^alpha)^2)
-			preds[i]<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+			pr<-atrisk.t * ft / pmax(1e-10, (cure.t + atrisk.t * st))
+			preds[i,1]<-mean(pr)
+			preds[i,2]<-quantile(pr,probs=0.05)
+			preds[i,3]<-quantile(pr,probs=0.95)
 		}
 	}
 	
-plot(ti,preds,type="l",xlab="Time",ylab="Conditional Hazard")
+plot(ti,preds[,1],type="l",xlab="Time",ylab="Conditional Hazard",ylim=c(0,max(preds[,3])))
+lines(ti,preds[,2],lty=2)
+lines(ti,preds[,3],lty=2)
 
 }
 
