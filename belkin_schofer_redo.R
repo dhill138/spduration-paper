@@ -156,7 +156,9 @@ lines(ti,preds[,3],lty=2)
 }
 
 plot.hazard(weib.model)
+pdf(file="loglog_hazard.pdf")
 plot.hazard(loglog.model)
+dev.off()
 plot.hazard(weib.model,xvals=c(1, 2, 1, 0),zvals=c(1,7,1,1,0,0,1))
 plot.hazard(loglog.model,xvals=c(1, 2, 1, 0),zvals=c(1,7,1,1,0,0,1))
 
