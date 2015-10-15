@@ -164,6 +164,7 @@ plot.hazard(loglog.model,xvals=c(1, 2, 1, 0),zvals=c(1,7,1,1,0,0,1))
 
 # playing around
 shape <- exp(weib.model$coefficients["log(alpha)"])
+shape <- exp(0.788)
 t <- seq(1, 35, length.out=200)
 
 hist(new.coup.data$duration[new.coup.data$failure==1], breaks=35, freq=F)
