@@ -301,13 +301,15 @@ examine whether the indicator effectively separates at-risk cases from
 cases where coups are impossible.
 
 We begin by loading the package and formatting the data appropriately.
-\small
 
-\begin{verbatim}
-> library(spduration)
-> new.coup.data <- add_duration(coup.data, "coup", unitID="countryid", tID="year", 
-+   freq="year")
-\end{verbatim}
+\begin{CodeChunk}
+\begin{CodeInput}
+library(spduration)
+data(coup.data)
+new.coup.data <- add_duration(coup.data, "coup", unitID="countryid", tID="year",
+                              freq="year")
+\end{CodeInput}
+\end{CodeChunk}
 
 \normalsize
 The \texttt{add}\_\texttt{duration} function takes as input a data frame
@@ -321,25 +323,28 @@ the formula in the \texttt{spdur} function. Though the data used in this
 example are recorded annually, the function supports annual, monthly, or
 daily data. We begin by fitting first a Weibull and then a log-logistic
 split-population duration model using the coups data, including the
-measure of coup risk in the logit (risk) equation. \small
+measure of coup risk in the logit (risk) equation.
 
-\begin{verbatim}
-> weib.model <- spdur(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-+       atrisk~Coup.Risk+GDP.cap.+Military.Regime+
-+       Recent.War+Regional.Conflict+
-+       South.Am.+Central.Am.,data=new.coup.data)
-> loglog.model <- spdur(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-+       atrisk~Coup.Risk+GDP.cap.+Military.Regime+
-+       Recent.War+Regional.Conflict+
-+       South.Am.+Central.Am.,data=new.coup.data,distr="loglog")
-\end{verbatim}
+\begin{CodeChunk}
+\begin{CodeInput}
+weib_model <- spdur(
+  duration ~ milreg + instab + rwar + regconf,
+  atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
+  data=bscoup)
 
-\normalsize  
-Using the \texttt{summary} function on either model object will produce
+loglog_model <- spdur(
+  duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
+  atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
+South.Am.+Central.Am.,
+  data=bscoup, distr="loglog")
+\end{CodeInput}
+\end{CodeChunk}
+
+Using the \code{summary} function on either model object will produce
 standard output showing the model formula, estimates for the duration
 and risk equations, and test statistics with \(p\)-values. One may also
-use the \texttt{AIC} and \texttt{BIC} function to calculate the
-information criterion statistics for \texttt{spdur} objects.\\\small
+use the \code{AIC} and \code{BIC} function to calculate the information
+criterion statistics for \code{spdur} objects.\\\small
 
 \begin{verbatim}
 > AIC(weib.model)

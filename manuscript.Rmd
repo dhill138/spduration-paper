@@ -121,29 +121,30 @@ The `spduration` package implements a split-population duration regression for d
 To illustrate the usefulness of the package and the broad applicability of the methods outlined above, we employ an example from political science. We replicate and extend the analysis presented in @belkin2003toward, which examines factors that lead to military coups. Belkin and Schofer's distinction between "structural" vs. "triggering"" causes of coups strongly suggests that a split-population approach to this question will be useful. They argue that many countries never experience coups because coups are effectvely impossible due to structural factors, while others that never experience coups are nevertheless at risk due to a different configuration of those same factors. Using language which fits nicely with the class of models described above, they say "Triggers are not the source of the original risk, and in the absence of structural causes, the presence of triggering factors alone cannot lead to a coup. Hence, triggers should not be equated with coup risk. Rather, they are factors that may determine the exact timing of a coup in regimes that suffer from high coup risk" [p. 598 @belkin2003toward]. Belkin and Schofer develop a measure of ``structural coup risk'' which incorporates factors such as the strength of democratic institutions and civil society, and a recent history of successful coups. They employ a logistic regression model which does not adequately capture the process described in the quote above, since it implicitly assumes that all observations are at risk for a coup (i.e., the probability of a coup is non-zero for all observations). Their structural coup risk indicator is developed precisely to distinguish between cases where coups are possible and cases where they are not, so the split-population model allows one to examine whether the indicator effectively separates at-risk cases from cases where coups are impossible. 
 
 We begin by loading the package and formatting the data appropriately. 
-\small
-\begin{verbatim}
-> library(spduration)
-> new.coup.data <- add_duration(coup.data, "coup", unitID="countryid", tID="year", 
-+   freq="year")
-\end{verbatim}
+```{r, eval=FALSE}
+library(spduration)
+data(coup.data)
+new.coup.data <- add_duration(coup.data, "coup", unitID="countryid", tID="year",
+                              freq="year")
+```
 
 \normalsize
 The \texttt{add}\_\texttt{duration} function takes as input a data frame with a binary response variable (in this example, "coup"") that measures the occurrence of the event, or failure, recorded over discrete time periods, and produces a data frame with a duration variable (named "duration") for each spell as well as a binary variable ("atrisk") that is constant across the spell and indicates whether the spell ended in failure. These are then used as response variables for the formula in the `spdur` function. Though the data used in this example are recorded annually, the function supports annual, monthly, or daily data. We begin by fitting first a Weibull and then a log-logistic split-population duration model using the coups data, including the measure of coup risk in the logit (risk) equation. 
-\small
-\begin{verbatim}
-> weib.model <- spdur(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-+ 	 	atrisk~Coup.Risk+GDP.cap.+Military.Regime+
-+ 	 	Recent.War+Regional.Conflict+
-+ 	 	South.Am.+Central.Am.,data=new.coup.data)
-> loglog.model <- spdur(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-+  	 	atrisk~Coup.Risk+GDP.cap.+Military.Regime+
-+  	 	Recent.War+Regional.Conflict+
-+ 	 	South.Am.+Central.Am.,data=new.coup.data,distr="loglog")
-\end{verbatim}
 
-\normalsize  
-Using the \texttt{summary} function on either model object will produce standard output showing the model formula, estimates for the duration and risk equations, and test statistics with $p$-values. One may also use the \texttt{AIC} and \texttt{BIC} function to calculate the information criterion statistics for \texttt{spdur} objects.  
+```{r models, eval=FALSE}
+weib_model <- spdur(
+  duration ~ milreg + instab + rwar + regconf,
+  atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
+  data=bscoup)
+
+loglog_model <- spdur(
+  duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
+  atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
+South.Am.+Central.Am.,
+  data=bscoup, distr="loglog")
+```
+
+Using the \code{summary} function on either model object will produce standard output showing the model formula, estimates for the duration and risk equations, and test statistics with $p$-values. One may also use the \code{AIC} and \code{BIC} function to calculate the information criterion statistics for \code{spdur} objects.  
 \small
 \begin{verbatim}
 > AIC(weib.model)
@@ -275,7 +276,7 @@ Furthermore, in out-of-sample testing based on some kind of data partitioning sc
 
 # Conclusion
 
-```{r, include = FALSE}
+```{r rates, include = FALSE}
 library(foreign)
 library(magrittr)
 library(ggplot2)
