@@ -304,11 +304,18 @@ We begin by loading the package and formatting the data appropriately.
 
 \begin{CodeChunk}
 \begin{CodeInput}
-library(spduration)
-data(coup.data)
-new.coup.data <- add_duration(coup.data, "coup", unitID="countryid", tID="year",
-                              freq="year")
+library("spduration")
+#data(bscoup)
+library("foreign")
+bscoup <- read.dta("data/BelkinSchoferTable4.dta")
+bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
+bscoup      <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
+                            freq="year")
 \end{CodeInput}
+\begin{CodeOutput}
+Warning in attempt_date(data[, tID], freq): Converting to 'Date' class with
+yyyy-06-30
+\end{CodeOutput}
 \end{CodeChunk}
 
 \normalsize
@@ -325,75 +332,69 @@ daily data. We begin by fitting first a Weibull and then a log-logistic
 split-population duration model using the coups data, including the
 measure of coup risk in the logit (risk) equation.
 
-\begin{CodeChunk}
-\begin{CodeInput}
-weib_model <- spdur(
-  duration ~ milreg + instab + rwar + regconf,
-  atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
-  data=bscoup)
-
-loglog_model <- spdur(
-  duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-  atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
-South.Am.+Central.Am.,
-  data=bscoup, distr="loglog")
-\end{CodeInput}
-\end{CodeChunk}
-
 Using the \code{summary} function on either model object will produce
 standard output showing the model formula, estimates for the duration
 and risk equations, and test statistics with \(p\)-values. One may also
 use the \code{AIC} and \code{BIC} function to calculate the information
-criterion statistics for \code{spdur} objects.\\\small
+criterion statistics for \code{spdur} objects.
 
-\begin{verbatim}
-> AIC(weib.model)
-[1] 1120.774
-> AIC(loglog.model)
-[1] 1111.908
-> BIC(weib.model)
-[1] 1209.577
-> BIC(loglog.model)
-[1] 1200.711
-\end{verbatim}
+\begin{CodeChunk}
+\begin{CodeInput}
+AIC(weib_model)
+\end{CodeInput}
+\begin{CodeOutput}
+[1] 1207.992
+\end{CodeOutput}
+\begin{CodeInput}
+AIC(loglog_model)
+\end{CodeInput}
+\begin{CodeOutput}
+[1] 1110.829
+\end{CodeOutput}
+\begin{CodeInput}
+BIC(weib_model)
+\end{CodeInput}
+\begin{CodeOutput}
+[1] 1290.452
+\end{CodeOutput}
+\begin{CodeInput}
+BIC(loglog_model)
+\end{CodeInput}
+\begin{CodeOutput}
+[1] 1193.289
+\end{CodeOutput}
+\end{CodeChunk}
 
-\normalsize
 The objects produced by \texttt{spdur} can also be used with functions
 in the \texttt{xtable} package to produce \LaTeX~code for tables of
 results. The \texttt{xtable} function used on an \texttt{spdur} object
 will produce code such as that used to create Table \ref{loglog_table}.
-\small
-
-\begin{verbatim}
-> xtable(loglog.model,caption="Coup model with log-logistic hazard")
-\end{verbatim}
 
 \begin{table}[ht]
 \centering
-\caption{Coup model with log-logistic hazard} \label{loglog_table}
-\begin{tabular}{rlrrr}
+\caption{Coup model with log-logistic hazard} 
+\label{loglog_table}
+\begin{tabular}{lrrr}
   \hline
- & Parameter & Estimate & StdErr & p \\ 
+Parameter & Estimate & StdErr & p \\ 
   \hline
-1 & (Dur. Intercept) & 3.29 & 0.14 & 0.00 \\ 
-  2 & Military.Regime & -1.51 & 0.16 & 0.00 \\ 
-  3 & Instability & -0.21 & 0.04 & 0.00 \\ 
-  4 & Recent.War & -0.20 & 0.28 & 0.48 \\ 
-  5 & Regional.Conflict & 2.64 & 2.56 & 0.30 \\ 
-  6 & log(alpha) & -0.53 & 0.07 & 0.00 \\ 
-  7 & (Risk Intercept) & -13.10 & 10.03 & 0.19 \\ 
-  8 & Coup.Risk & 7.32 & 3.23 & 0.02 \\ 
-  9 & GDP.cap. & 3.11 & 1.82 & 0.09 \\ 
-  10 & Military.Regime.1 & 25.41 & 0.01 & 0.00 \\ 
-  11 & Recent.War.1 & -4.34 & 2.70 & 0.11 \\ 
-  12 & Regional.Conflict.1 & -39.74 & 23.96 & 0.10 \\ 
-  13 & South.Am. & -3.72 & 3.19 & 0.24 \\ 
-  14 & Central.Am. & -6.08 & 2.45 & 0.01 \\ 
+(Dur. Intercept) & 3.30 & 0.14 & 0.00 \\ 
+  milreg & -1.53 & 0.15 & 0.00 \\ 
+  instab & -0.22 & 0.03 & 0.00 \\ 
+  regconf & 3.04 & 2.22 & 0.17 \\ 
+  log(alpha) & -0.52 & 0.07 & 0.00 \\ 
+  (Risk Intercept) & -14.61 & 9.02 & 0.11 \\ 
+  couprisk & 9.11 & 4.37 & 0.04 \\ 
+  wealth & 3.51 & 1.75 & 0.05 \\ 
+  milreg.1 & 21.76 & 0.24 & 0.00 \\ 
+  rwar & -6.37 & 5.38 & 0.24 \\ 
+  regconf.1 & -20.22 & 54.04 & 0.71 \\ 
+  samerica & -3.31 & 3.28 & 0.31 \\ 
+  camerica & -6.46 & 2.57 & 0.01 \\ 
    \hline
 \end{tabular}
 \end{table}
 
-\normalsize
 The table shows estimates from the duration equation, beginning with the
 intercept, and then estimates from the risk equation. Interestingly, the
 coup risk variable has a rather large and statistically significant
@@ -411,17 +412,28 @@ uses the mean values of the covariates during the simulations, but users
 can choose specific covariate values by entering them as vectors in the
 arguments \texttt{xvals} and \texttt{zvals}, which correspond to the
 covariates in the duration and risk equations, respectively. The command
-below creates Figure \ref{hazard}.
+below creates Figure \ref{plot-hazard2}.
 
-\begin{verbatim}
-> plot.hazard(loglog.model)
-\end{verbatim}
+\begin{CodeChunk}
+\begin{CodeInput}
+plot(loglog_model, type="hazard", main = "A")
+\end{CodeInput}
+\end{CodeChunk}
 
-\begin{figure}[htbp!]
-\centering
-\includegraphics[width=4in]{graphics/loglog_hazard.pdf}
-\caption{Conditional hazard rate from log-logistic model.} \label{hazard}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{graphics/hazard-ex.pdf}
+\end{center}
 \end{figure}
+
+\begin{CodeChunk}
+\begin{CodeInput}
+plot(loglog_model, type="hazard", 
+     xvals = c(1, 1, 10, 0.05), 
+     zvals = c(1, 7, 8.64, 1, 1, 0.05, 0, 0),
+     main = "B")
+\end{CodeInput}
+\end{CodeChunk}
 
 Importantly, the package also includes functions to evaluate model
 predictions. The generic function \texttt{predict} can be used on an
@@ -431,16 +443,21 @@ probability of failure for a given time period. In addition, the generic
 \texttt{plot} function can be used on \texttt{spdur} objects to produce
 a separation plot (Greenhill, Ward, and Sacks 2011), which is a
 graphical display for evaluating model predictions. The code below
-produces Figure \ref{insamp}. \small
+produces Figure \ref{insamp}.
 
-\begin{verbatim}
-> dev.new(width=9,height=3)
-> par(mfrow=c(2,1),mar=c(2,2,2,2))
-> plot(weib.model,endSpellOnly=F)
-> plot(loglog.model,endSpellOnly=F)
-\end{verbatim}
+\begin{CodeChunk}
+\begin{CodeInput}
+plot(weib_model)
+plot(loglog_model)
+\end{CodeInput}
+\end{CodeChunk}
 
-\normalsize
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{graphics/sepplots.pdf}
+\end{center}
+\end{figure}
+
 The option \texttt{endSpellOnly} is set to \texttt{FALSE} so that every
 observation, not only those at the end of a spell, is used in the plot.
 By default the \texttt{plot} function will calculate the conditional
@@ -451,40 +468,66 @@ line, with non-events shown in beige. This makes it easy to see whether
 the model is assigning high probabilities of failure to actual cases of
 failure, and low probabilities to non-failures.
 
-\begin{figure}[htbp!]
-\centering
-\includegraphics[width=5in]{graphics/in-sample.pdf}
-\caption{{\em In-sample separation plots for Weibull and log-logistic models.}} \label{insamp}
-\end{figure}
+Finally, we demonstrate how to evaluate a model's out of sample
+predictions. We begin by splitting the data into training and test sets,
+using the last year of data (1999) as the test set and omitting
+incomplete observations from the test set.
 
-Finally, we demonstrate use of the \texttt{spdurCrisp} function for
-evaluating out-of-sample predictions. We begin by splitting the data
-into training and test sets, using the last year of data (1999) as the
-test set and omitting incomplete observations from the test set. \small
+\begin{CodeChunk}
+\begin{CodeInput}
+data(bscoup)
+bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
+coup_train <- bscoup[bscoup$year < 1996, ]
+coup_train <- add_duration(coup_train, "coup", unitID="countryid", tID="year",
+                          freq="year")
+\end{CodeInput}
+\begin{CodeOutput}
+Warning in attempt_date(data[, tID], freq): Converting to 'Date' class with
+yyyy-06-30
+\end{CodeOutput}
+\end{CodeChunk}
 
-\begin{verbatim}
-> coup.train<-new.coup.data[coup.data$year<1999,]
-> coup.test<-new.coup.data[new.coup.data$year==1999,]
-> coup.test<-na.omit(coup.test)
-\end{verbatim}
+
+\begin{CodeChunk}
+\begin{CodeInput}
+coup_test  <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
+                           freq="year")
+\end{CodeInput}
+\begin{CodeOutput}
+Warning in attempt_date(data[, tID], freq): Converting to 'Date' class with
+yyyy-06-30
+\end{CodeOutput}
+\begin{CodeInput}
+coup_test  <- coup_test[coup_test$year >= 1996, ]
+\end{CodeInput}
+\end{CodeChunk}
 
 \normalsize
 The \texttt{spdurCrisp} function can then be used to fit a model on the
-training set and generate predictions for the test set. \small
+training set and generate predictions for the test set.
 
-\begin{verbatim}
-> weib.model2<-spdurCrisp(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-+       atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
-+       South.Am.+Central.Am.,
-+       last='end.spell',train=coup.train,test=coup.test,pred=coup.test)
-> weib.preds<-as.numeric(weib.model2$test.p)
->
-> loglog.model2<-spdurCrisp(duration~Military.Regime+Instability+Recent.War+Regional.Conflict,
-+       atrisk~Coup.Risk+GDP.cap.+Military.Regime+Recent.War+Regional.Conflict+
-+       South.Am.,
-+       last='end.spell',train=coup.train,test=coup.test,pred=coup.test,distr="loglog")
-> loglog.preds<-as.numeric(loglog.model2$test.p)
-\end{verbatim}
+\begin{CodeChunk}
+\begin{CodeInput}
+weib_model2   <- spdur(
+  duration ~ milreg + instab + regconf,
+  atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
+  data = coup_train, silent = TRUE)
+
+loglog_model2 <- spdur(
+  duration ~ milreg + instab + regconf,
+  atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
+  data = coup_train, distr="loglog", silent = TRUE) 
+\end{CodeInput}
+\end{CodeChunk}
+
+Foo
+
+\begin{CodeChunk}
+\begin{CodeInput}
+weib2_test_p   <- predict(weib_model2, newdata = coup_test)
+loglog2_test_p <- predict(loglog_model2, newdata = coup_test)
+\end{CodeInput}
+\end{CodeChunk}
 
 \normalsize
 The \texttt{train},\texttt{test}, and \texttt{pred} arguments are used
@@ -496,24 +539,40 @@ default calculation for this function and is the probability that an
 observation is in the at-risk population. The test set predictions are
 stored in the model object as \texttt{test.p}, and we extract them to
 produce the plot shown below in Figure \ref{outsamp}, which was created
-using the \texttt{separationplot} package. \small
+using the \texttt{separationplot} package.
 
-\begin{verbatim}
-> dev.new(width=9,height=3)
-> par(mfrow=c(2,1),mar=c(2,2,2,2))
-> separationplot(weib.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
-> separationplot(loglog.preds,coup.test$Coup,newplot=F,show.expected=T,lwd1=5,lwd2=2)
-\end{verbatim}
+\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
+library(``separationplot'')
 
-\includegraphics{out-of-sample.pdf}
+obs\_y \textless{}- coup\_test\$coup{[}complete.cases(coup\_test){]}
 
-\normalsize
+par(mfrow=c(2,1),mar=c(2,2,2,2)) separationplot(weib2\_test\_p, obs\_y)
+separationplot(loglog2\_test\_p, obs\_y)
+\textbackslash{}end\{CodeInput\} \textbackslash{}end\{CodeChunk\}
 
-\begin{figure}[htbp!]
-\centering
-\includegraphics[width=5in]{out-of-sample.pdf}
-\caption{{\em Out-of-sample separation plots for Weibull and log-logistic models. }} \label{outsamp}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{graphics/oos-sepplots.pdf}
+\end{center}
 \end{figure}
+
+\begin{CodeChunk}
+\begin{CodeInput}
+glm_model2    <- glm(
+  coup ~ milreg + instab + regconf + couprisk + wealth + rwar + regconf + 
+    samerica + camerica,
+  data = coup_train, family = "binomial"
+)
+
+c(Weibull = AIC(weib_model2), 
+  Loglog = AIC(loglog_model2), 
+  Logistic = AIC(glm_model2))
+\end{CodeInput}
+\begin{CodeOutput}
+  Weibull    Loglog  Logistic 
+ 990.5818  985.2633 1171.3556 
+\end{CodeOutput}
+\end{CodeChunk}
 
 \section{Censoring considerations}
 
