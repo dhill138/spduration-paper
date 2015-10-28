@@ -5,12 +5,12 @@ author:
     address: >
       First line
       Second line
-    email: name@company.com
-    url: http://rstudio.com
+    email: dwhill@uga.edu
+    url: http://spia.uga.edu/directory/faculty_staff/hill-daniel
   - name: Nils W. Metternich
     affiliation: University College London
   - name: Andreas Beger
-    affiliation: who knows
+    affiliation: Duke University
   - name: Michael D. Ward
     affiliation: Duke University
 title:
@@ -116,11 +116,14 @@ For a given unconditional risk rate $\pi$, the probability that a particular cas
 
 # Fit a split-population model on coups data
 
-The `spduration` package implements a split-population duration regression for data with time-varying covariates and with two options for the hazard rate shape, the Weibull and log-logistic.\footnote{The Weibull allows for monotonically increasing or decreasing hazard rates, while the log-logistic allows for rates that first increase and then decrease.} The primary function, \texttt{spdur}, produces a regression model object of class \texttt{spdur} which can then be used with further methods. 
+The \pkg{spduration} package for \proglang{R} implements a split-population duration regression for data with time-varying covariates and with two options for the hazard rate shape, Weibull and log-logistic. The Weibull density allows for hazard rates that are increasing, constant, or decreasing over survival time, while the log-logistic density also can fit rates that have a peak at a particular survival time. 
 
-To illustrate the usefulness of the package and the broad applicability of the methods outlined above, we employ an example from political science. We replicate and extend the analysis presented in @belkin2003toward, which examines factors that lead to military coups. Belkin and Schofer's distinction between "structural" vs. "triggering"" causes of coups strongly suggests that a split-population approach to this question will be useful. They argue that many countries never experience coups because coups are effectvely impossible due to structural factors, while others that never experience coups are nevertheless at risk due to a different configuration of those same factors. Using language which fits nicely with the class of models described above, they say "Triggers are not the source of the original risk, and in the absence of structural causes, the presence of triggering factors alone cannot lead to a coup. Hence, triggers should not be equated with coup risk. Rather, they are factors that may determine the exact timing of a coup in regimes that suffer from high coup risk" [p. 598 @belkin2003toward]. Belkin and Schofer develop a measure of ``structural coup risk'' which incorporates factors such as the strength of democratic institutions and civil society, and a recent history of successful coups. They employ a logistic regression model which does not adequately capture the process described in the quote above, since it implicitly assumes that all observations are at risk for a coup (i.e., the probability of a coup is non-zero for all observations). Their structural coup risk indicator is developed precisely to distinguish between cases where coups are possible and cases where they are not, so the split-population model allows one to examine whether the indicator effectively separates at-risk cases from cases where coups are impossible. 
+As an example to illustrate the package functionality, we will replicate and extend the model of coup onsets in @belkin2003toward. Belkin and Schofer's paper lends itself to re-analysis with a split-populuation duration model because they explicitly distinguish long-term structural risk factors for coups from more short-term triggering causes that can explain the timing of a coup in a regime at risk. They argue that many countries never experience coups because coups are effectvely impossible due to structural factors, while others that never experience coups are nevertheless at risk due to a different configuration of those same factors. Using language which fits nicely with the class of models described above, they say "Triggers are not the source of the original risk, and in the absence of structural causes, the presence of triggering factors alone cannot lead to a coup. Hence, triggers should not be equated with coup risk. Rather, they are factors that may determine the exact timing of a coup in regimes that suffer from high coup risk" [p. 598 @belkin2003toward]
 
-We begin by loading the package and formatting the data appropriately. 
+Belkin and Schofer develop a measure of ``structural coup risk'' which incorporates factors such as the strength of democratic institutions and civil society, and a recent history of successful coups. They employ a logistic regression model which does not adequately capture the process described in the quote above, since it implicitly assumes that all observations are at risk for a coup (i.e., the probability of a coup is non-zero for all observations). Their structural coup risk indicator is developed precisely to distinguish between cases where coups are possible and cases where they are not, so the split-population model allows one to examine whether the indicator effectively separates at-risk cases from cases where coups are impossible. 
+
+We begin by loading the package and the Belkin and Schofer replication data, and formatting the data to add several variables needed by the split-population duration model. 
+
 ```{r data}
 library("spduration")
 #data(bscoup)
@@ -132,7 +135,9 @@ bscoup      <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
 ```
 
 \normalsize
-The \texttt{add}\_\texttt{duration} function takes as input a data frame with a binary response variable (in this example, "coup"") that measures the occurrence of the event, or failure, recorded over discrete time periods, and produces a data frame with a duration variable (named "duration") for each spell as well as a binary variable ("atrisk") that is constant across the spell and indicates whether the spell ended in failure. These are then used as response variables for the formula in the `spdur` function. Though the data used in this example are recorded annually, the function supports annual, monthly, or daily data. We begin by fitting first a Weibull and then a log-logistic split-population duration model using the coups data, including the measure of coup risk in the logit (risk) equation. 
+The \code{add\_duration} function takes as input a data frame with a binary response variable (in this example, "coup"") that measures the occurrence of the event, or failure, recorded over discrete time periods, and produces a data frame with a duration variable (named "duration") for each spell as well as a binary variable ("atrisk") that is constant across the spell and indicates whether the spell ended in failure. These are then used as response variables for the formula in the `spdur` function. The \code{spdur} function is the primary function in the package and produces a regression model object of class \code{spdur} which can then be used with further methods.
+
+Though the data used in this example are recorded annually, the function supports annual, monthly, or daily data. We begin by fitting first a Weibull and then a log-logistic split-population duration model using the coups data, including the measure of coup risk in the logit (risk) equation. 
 
 ```{r models, include = FALSE}
 weib_model <- spdur(
@@ -154,7 +159,7 @@ BIC(weib_model)
 BIC(loglog_model)
 ```
 
-The objects produced by \texttt{spdur} can also be used with functions in the \texttt{xtable} package to produce \LaTeX\ code for tables of results. The \texttt{xtable} function used on an \texttt{spdur} object will produce code such as that used to create Table \ref{loglog_table}. 
+The objects produced by \code{spdur} can also be used with functions in the \code{xtable} package to produce \LaTeX\ code for tables of results. The \code{xtable} function used on an \code{spdur} object will produce code such as that used to create Table \ref{loglog_table}. 
 
 ```{r summary-table, include=FALSE}
 library("xtable")
@@ -190,7 +195,7 @@ Parameter & Estimate & StdErr & p \\
 
 The table shows estimates from the duration equation, beginning with the intercept, and then estimates from the risk equation. Interestingly, the coup risk variable has a rather large and statistically significant coefficient in the risk equation. 
 
-The package also includes a function, \texttt{plot.hazard}, that can be used with an \texttt{spdur} object to plot the estimated hazard rate. \texttt{plot.hazard} plots the conditional hazard, which is the probability of survival conditional on the covariates in the risk and duration equations, and conditional on survival up to time $t$. The function calculates the estimated hazard rate as well as 90\% confidence intervals, which are produced by simulating values from the estimated sampling distributions of the model parameters. By default the function uses the mean values of the covariates during the simulations, but users can choose specific covariate values by entering them as vectors in the arguments \texttt{xvals} and \texttt{zvals}, which correspond to the covariates in the duration and risk equations, respectively. The command below creates Figure \ref{plot-hazard2}.
+The package also includes a function, \code{plot_hazard}, that can be used with an \code{spdur} object to plot the estimated hazard rate. \code{plot_hazard} plots the conditional hazard, which is the probability of survival conditional on the covariates in the risk and duration equations, and conditional on survival up to time $t$. The function calculates the estimated hazard rate as well as 90\% confidence intervals, which are produced by simulating values from the estimated sampling distributions of the model parameters. By default the function uses the mean values of the covariates during the simulations, but users can choose specific covariate values by entering them as vectors in the arguments \code{xvals} and \code{zvals}, which correspond to the covariates in the duration and risk equations, respectively. The command below creates the graph A in Figure \ref{hazard-ex}.
 
 ```{r hazard-ex-1, eval = FALSE}
 plot(loglog_model, type="hazard", main = "A")
@@ -199,6 +204,8 @@ plot(loglog_model, type="hazard", main = "A")
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.8\textwidth]{graphics/hazard-ex.pdf}
+\caption{Plots of the hazard rate for the log-logistic model of coups. The left graph uses the default mean values for covariates, while graph B uses user-specified variable values for a high-risk military regime.}
+\label{hazard-ex}
 \end{center}
 \end{figure}
 
@@ -210,7 +217,7 @@ plot(loglog_model, type="hazard",
 ```
 
 
-Importantly, the package also includes functions to evaluate model predictions. The generic function \texttt{predict} can be used on an object of class \texttt{spdur} to generate several kinds of predictions, including the probability that an observation is ``at-risk'' and the probability of failure for a given time period. In addition, the generic \texttt{plot} function can be used on \texttt{spdur} objects to produce a separation plot [@greenhill2011separation], which is a graphical display for evaluating model predictions. The code below produces Figure \ref{insamp}.
+Importantly, the package also includes functions to evaluate model predictions. The generic function \code{predict} can be used on an object of class \code{spdur} to generate several kinds of predictions, including the probability that an observation is ``at-risk'' and the probability of failure for a given time period. In addition, the generic \code{plot} function can be used on \code{spdur} objects to produce a separation plot [@greenhill2011separation], which is a graphical display for evaluating model predictions. The code below produces Figure \ref{insamp}.
 
 ```{r, eval = FALSE}
 plot(weib_model)
@@ -220,10 +227,12 @@ plot(loglog_model)
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.8\textwidth]{graphics/sepplots.pdf}
+\caption{In-sample separation plots of Weibull and log-logistic model conditional hazard predictions}
+\label{insamp}
 \end{center}
 \end{figure}
 
-The option \texttt{endSpellOnly} is set to \texttt{FALSE} so that every observation, not only those at the end of a spell, is used in the plot. By default the \texttt{plot} function will calculate the conditional hazard for each observation. The separation plot sorts observations from left to right according to the predicted probability assigned by the model (higher values to the right), and shows each event/failure as red line, with non-events shown in beige. This makes it easy to see whether the model is assigning high probabilities of failure to actual cases of failure, and low probabilities to non-failures. 
+The option \code{endSpellOnly} is set to \code{FALSE} so that every observation, not only those at the end of a spell, is used in the plot. By default the \code{plot} function will calculate the conditional hazard for each observation. The separation plot sorts observations from left to right according to the predicted probability assigned by the model (higher values to the right), and shows each event/failure as red line, with non-events shown in beige. This makes it easy to see whether the model is assigning high probabilities of failure to actual cases of failure, and low probabilities to non-failures. 
 
 Finally, we demonstrate how to evaluate a model's out of sample predictions. We begin by splitting the data into training and test sets, using the last year of data (1999) as the test set and omitting incomplete observations from the test set. 
 ```{r}
@@ -243,7 +252,7 @@ coup_test  <- coup_test[coup_test$year >= 1996, ]
 
 
 \normalsize
-The \texttt{spdurCrisp} function can then be used to fit a model on the training set and generate predictions for the test set. 
+The \code{spdurCrisp} function can then be used to fit a model on the training set and generate predictions for the test set. 
 
 ```{r}
 weib_model2   <- spdur(
@@ -266,7 +275,7 @@ loglog2_test_p <- predict(loglog_model2, newdata = coup_test)
 
 
 \normalsize
-The \texttt{train},\texttt{test}, and \texttt{pred} arguments are used to specify data frames for the training set, test set, and forecasting set. We do not wish to generate forecasts here, so we simply specify the same data frame for the test and forecasting set. Here we use \texttt{spdurCrisp} to calculate the conditional risk, which is the default calculation for this function and is the probability that an observation is in the at-risk population. The test set predictions are stored in the model object as \texttt{test.p}, and we extract them to produce the plot shown below in Figure \ref{outsamp}, which was created using the \texttt{separationplot} package. 
+The \code{train},\code{test}, and \code{pred} arguments are used to specify data frames for the training set, test set, and forecasting set. We do not wish to generate forecasts here, so we simply specify the same data frame for the test and forecasting set. Here we use \code{spdurCrisp} to calculate the conditional risk, which is the default calculation for this function and is the probability that an observation is in the at-risk population. The test set predictions are stored in the model object as \code{test.p}, and we extract them to produce the plot shown below in Figure \ref{outsamp}, which was created using the \code{separationplot} package. 
 
 ```{r oos-sepplots}
 library("separationplot")
@@ -302,14 +311,13 @@ c(Weibull = AIC(weib_model2),
 
 Truncation and censoring are problematic for split-population duration models as they are for standard duration regression, but also pose some additional considerations. In left-truncation, we do not observe data for a spell prior to some date, and thus have incomplete and inaccurate values for the duration or time to failure for a spell. Since immune spells in the sample are over time going to distinguish themselves with exceptionally long survival times compared to spells at risk which fail periodically, left-censoring also makes it more difficult to distinguish the immune and at risk subpopulations. 
 
-Sometimes information about previous failures in the data is available beyond the time period over which covariates are observed, making it possible to ameliorate or eliminate left-censoring by using the information of previous failures when constructing the necessary duration variables with \texttt{add\_duration()}. 
+Sometimes information about previous failures in the data is available beyond the time period over which covariates are observed, making it possible to ameliorate or eliminate left-censoring by using the information of previous failures when constructing the necessary duration variables with \code{add\_duration()}. 
 
-Right-censoring, where spells end before outcomes are observed, also pose a unique problem in the split-population framework. Although right-censored spells themselves are accommodated in the modeling function, they impact the coding of at risk vs. immune spells. The \texttt{add\_duration()} function retroactively codes all observations in a spell as at risk if the spell itself ended in failure. Right-censored spells are coded as immune over their entire duration. This can lead to some misclassification of observations as immune even though they experience failure at some point in the unobserved future. 
+Right-censoring, where spells end before outcomes are observed, also pose a unique problem in the split-population framework. Although right-censored spells themselves are accommodated in the modeling function, they impact the coding of at risk vs. immune spells. The \code{add\_duration()} function retroactively codes all observations in a spell as at risk if the spell itself ended in failure. Right-censored spells are coded as immune over their entire duration. This can lead to some misclassification of observations as immune even though they experience failure at some point in the unobserved future. 
 
 Furthermore, in out-of-sample testing based on some kind of data partitioning scheme, this coding scheme can lead to unintentioned contamination of in-sample cases with knowledge of out-of-sample failures through the risk coding for failed spells. This leads to two recommendations. First, the duration data (`add_duration`) should not be built until after partitioning the data. Secondly, and as a result of the first point, data should be partitioned in a scheme that samples either by spell or block-wise, e.g. by witholding the last **x** years of data, in order to be able to proberly build the duration variables. 
 
 # Conclusion
-
 
 \begin{figure}[htbp!]
 \centering
@@ -318,10 +326,10 @@ Furthermore, in out-of-sample testing based on some kind of data partitioning sc
 \label{rates}
 \end{figure}
 
-Data and outcomes in international relations, and to a lesser extent in other fields as well, are typically characterized by temporal dependence and, where a binary, ordinal, or count outcome is modelled, rare events or severely imbalanced classes with excessive numbers of zeros. Figure \ref{rates} shows a few examples for published research that models binary outcomes. 
+Many outcomes in the area that we work in, political science and political violence more specifically, are rare events. Coups, the onset of war and civil war, mass killings, and so on are exceedingly rare events when one considers that most countries most of the time are stable. Figure \ref{rates} shows a few examples for published research that models binary outcomes. @fearon2003ethnicity is a very widely cited study of civil war onset that uses yearly observations of all major countries, and @beger2015ensemble is an example of the positive rates when moving to monthly data for a similar set of countries. 
 
-This is a well-recognized problem and has led to the development or use of several specialized mixture models like zero-inflated Poisson and negative binomial regression for count data, and a zero-inflated ordered probit for ordinal outcomes [@bagozzi2015modeling]. Split-population duration regression provides another principled solution to the challenges posed by data in this domain, but, unlike other solutions to the sparse outcome problem, also addresses underlying temporal dynamics. 
+In the language of machine learning, we are dealing with highly imbalanced classes, although our data are also highly structured with clear dependence over space and time in countries and societies that may experience political violence. This is a well-recognized problem and has led to the development or use of several specialized mixture models like zero-inflated Poisson and negative binomial regression for count data, and a zero-inflated ordered probit for ordinal outcomes [@bagozzi2015modeling]. Split-population duration regression provides another principled solution to the challenges posed by data in this domain, but, unlike other solutions to the sparse outcome problem, also addresses underlying temporal dynamics. 
 
-In addition to these technical features, split-population duration models are also appealing in the context of theories or arguments that explicitly distinguish long-term structural causes from short-term triggering events, as @belkin2003toward and others do, as this conceptual distinction can be accomodated through the seperate risk and duration equations. 
+Split-population duration models are not only appealing in this technical sense, but they also match the logic or intuituion many analysts of politics use when they distinguish long-term risk factors from more fleeting triggering causes. The example we have used, @belkin2003toward, is a particularly clear illustration of how well the language of theorists maps onto the model intuition. 
 
 # References
