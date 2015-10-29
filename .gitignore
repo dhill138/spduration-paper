@@ -3,3 +3,8 @@
 .RData
 
 manuscript_cache/*
+
+*.aux
+*.log
+*.tex
+*.synctex.gz
