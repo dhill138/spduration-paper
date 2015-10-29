@@ -1,32 +1,32 @@
 #  Replication script for JSS manuscript examples
 
 library("spduration")
-library(foreign)
-library(magrittr)
-library(ggplot2)
-library(xtable)
-library(scales)
+library("foreign")
+library("magrittr")
+library("ggplot2")
+library("xtable")
+library("scales")
 
 
 data(bscoup)
 bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
-bscoup <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
-                       freq="year")
+bscoup      <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
+                            freq="year", ongoing = FALSE)
 
 weib_model <- spdur(
   duration ~ milreg + instab + regconf,
   atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
-  data=bscoup)
+  data=bscoup, silent = TRUE)
 
 loglog_model <- spdur(
   duration ~ milreg + instab + regconf,
   atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
-  data=bscoup, distr="loglog")
+  data=bscoup, distr="loglog", silent = TRUE)
 
-AIC(weib_model)
-AIC(loglog_model)
-BIC(weib_model)
-BIC(loglog_model)
+matrix(c(
+  AIC(weib_model), AIC(loglog_model), BIC(weib_model), BIC(loglog_model)
+  ), ncol = 2, dimnames = list(c("Weibull", "Loglog"), c("AIC", "BIC")))
+
 
 library("xtable")
 tbl <- xtable(loglog_model, caption="Coup model with log-logistic hazard",
@@ -67,10 +67,10 @@ data(bscoup)
 bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
 coup_train <- bscoup[bscoup$year < 1996, ]
 coup_train <- add_duration(coup_train, "coup", unitID="countryid", tID="year",
-                           freq="year")
+                           freq="year", ongoing = FALSE)
 
 coup_test  <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
-                           freq="year")
+                           freq="year", ongoing = FALSE)
 coup_test  <- coup_test[coup_test$year >= 1996, ]
 
 weib_model2   <- spdur(
@@ -83,12 +83,16 @@ loglog_model2 <- spdur(
   atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + camerica,
   data = coup_train, distr="loglog") 
 
+weib2_test_p   <- predict(weib_model2, newdata = coup_test)
+loglog2_test_p <- predict(loglog_model2, newdata = coup_test)
+
+
 #   Out-of-sample separation plots
 #   ______________________________
 
 library("separationplot")
 
-obs_y <- coup_test$coup[complete.cases(coup_test)]
+obs_y <- coup_test[complete.cases(coup_test), "coup"]
 
 pdf("graphics/oos-sepplots.pdf", height=4, width=10)
 par(mfrow=c(2,1),mar=c(2,2,2,2))
@@ -122,7 +126,7 @@ rates <- data.frame(
 
 load("data/irc_data_mod.rda")
 rates <- rbind(rates, data.frame(
-  data = "Beger et al 2015",
+  data = "Beger et al 2014",
   rate = mean(irc.data$irr.t)
 ))
 
