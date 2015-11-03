@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 
-manuscript_cache/*
 
 *.aux
 *.log
