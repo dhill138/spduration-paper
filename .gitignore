@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 
+manuscript_cache/*
+manuscript_files/*
 
 *.aux
 *.log
