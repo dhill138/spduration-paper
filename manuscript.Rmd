@@ -20,11 +20,11 @@ title:
   # For running headers, if needed
   short:     "\\pkg{spduration}: Split-population duration regression"
 abstract: >
-  We present an implementation of split-population duration regression in the   \pkg{spduration} R package and an application to data on military coups. The statistical model accounts for units that are immune to a certain outcome and not part of the duration process the researcher is primarily interested in. We provide insights that if immune units exist, we can significantly increase the predictive performance compared to standard duration model. The package includes estimation and forecasting methods for split-population Weibull and Loglogistic models.
+  We present an implementation of split-population duration regression in the   \pkg{spduration} R package and an application to data on military coups. The statistical model accounts for units that are immune to a certain outcome and not part of the duration process the researcher is primarily interested in. We provide insights that if immune units exist, we can significantly increase the predictive performance compared to standard duration models. The package includes estimation and several post-estimation methods for split-population Weibull and Loglogistic models.
 keywords:
   # at least one keyword must be supplied
-  formatted: [keywords, not capitalized, "\\proglang{R}"]
-  plain:     [keywords, not capitalized, R]
+  formatted: [regression, rare events, "\\proglang{R}"]
+  plain:     [regression, rare events, R]
 preamble: >
   \usepackage{amsmath}
   \usepackage{booktabs}
@@ -32,19 +32,6 @@ output:
   rticles::jss_article
 bibliography: spdur.bib
 ---
-
-# Introduction
-
-This template demonstrates some of the basic latex you'll need to know to create a JSS article.
-
-## Code formatting
-
-Don't use markdown, instead use the more precise latex commands:
-
-* \proglang{Java}
-* \pkg{plyr}
-* \code{print("abc")}
-
 
 # Introduction
 
@@ -56,11 +43,11 @@ However, sometimes we are interested in situations in which not all units are at
 
 Duration models, where the variable to be modeled describes a distribution of times until some event of interest, were originally developed in health and demographic research, where they grew naturally from life tables and survival records for medical patients. Basic formulations of such models, like the parametric exponential or Weibull regressions or semi-paramaetric Cox regression, implicitly assume that all subjects or units under observation, including right-censored observations, will eventually experience the event of interest. This assumption is outright wrong or at least disadvantageous in many substantive areas and empirical applications, where there instead is a sub-population of units or subjects that will never experience an event, and thus are effectively ``cured''. 
 
-This insight was realized as early as 1949 by @boag1949maximum and @berkson1952survival, who were researching survival rates in cancer patients following treatment, and where quite obviously some fraction of patients survived because their cancer was cured, while others relapsed after apparent remission due to levels of disease below detectable thresholds. As with conventional duration models, their origin in health and medicine has shaped the terminology conventionally used with such model, e.g. split-population duration models are sometimes also referred to in such contexts as cure rate models, and the basic concepts like survival and failure rates reference the survival of humans.
+This insight was realized as early as 1949 by @boag1949maximum and @berkson1952survival, who were researching survival rates in cancer patients following treatment, and were quite obviously some fraction of patients survived because their cancer was cured, while others relapsed after apparent remission due to levels of disease below detectable thresholds. As with conventional duration models, their origin in health and medicine has shaped the terminology conventionally used with such model, e.g. split-population duration models are sometimes also referred to in such contexts as cure rate models, and the basic concepts like survival and failure rates reference the survival of humans.
 
-Yet the intuition underlying split-population duration models has led to applications in a broad range of subject areas outside demographics and medicine. In an early and foundational application that reached beyond criminal science, @schmidt1989predicting examined criminal recidivism using data on close to 10,000 prisoners from the North Carolina prison system in the late 1970's and early 1980's to identify factors that influence whether a criminal lapses at all, and if so which factors are related to the amount of time between prison stints. This work already includes a full formulation of the model with independent covariates for both the duration equation and the risk or cure equation, although only with subject-specific covariates rather than time-varying covariates with multiple data points per subject.
+Yet the intuition underlying split-population duration models has led to applications in a broad range of subject areas outside demographics and medicine. In an early and foundational application that reached beyond medicine, @schmidt1989predicting examined criminal recidivism using data on close to 10,000 prisoners from the North Carolina prison system in the late 1970's and early 1980's to identify factors that influence whether a criminal lapses at all, and if so which factors are related to the amount of time between prison stints. This work already includes a full formulation of the model with independent covariates for both the duration equation and the risk or cure equation, although only with subject-specific covariates rather than time-varying covariates with multiple data points per subject.
 
-In public health, @douglas1994hazard use data from the US to model factors related to the age at which smokers started the habit, and @forster2001role examines the impact of tobacco taxes on smoking and quitting decisions. @deyoung2003failure models the failure of new commercial banks in the US during the 1980's. Lastly, in our own domain, political science, @svolik2008authoritarian used a split-population duration framework to study democratic consolidation, i.e. whether democratic regimes persist or slide back to authoritarianism, and when. Building on this effort, split-population duration models have also been used, along with other models, to produce regular predictions for five different forms of political conflict for the Integrated Crisis and Early Warning System (ICEWS) project [@ward2013learning] and to model irregular leadership changes for the Political Instability Task Force [PITF; @beger2014ensemble].
+In a complementary set of research from public health, @douglas1994hazard use data from the US to model the age at which smokers started the habit, and @forster2001role examine the impact of tobacco taxes on smoking and quitting decisions. @deyoung2003failure, an economist, models the failure of new commercial banks in the US during the 1980's. Lastly, in our own domain, political science, @svolik2008authoritarian used a split-population duration framework to whether democratic regimes persist or slide back to authoritarianism, and when. Building on this effort, split-population duration models have also been used, along with other models, to produce regular predictions for five different forms of political conflict for the Integrated Crisis and Early Warning System (ICEWS) project [@ward2013learning] and to model irregular leadership changes for the Political Instability Task Force [PITF; @beger2014ensemble].
 
 # Model development
 
@@ -91,7 +78,7 @@ Early efforts focused only on the cure rate ($1 - \pi$) and treated it as a cons
 
 Where $z_i$ is a vector of covariates for a subject at a given time. For interpretation, it is important to note that with time-varying covariates, the risk (or cured) estimate for a subject is particular to a given time point rather than constant for that subject over all time periods in the spell.\footnote{We use ``spell'' to designate all time periods observed for a subject up to the failure time. Subjects can theoretically have multiple spells, e.g. cancer patients who go into remission and relapse more than once, or states that experience multiple civil war onsets over their history.} Depending on the covariates, the risk estimate for a subject can thus fluctuate rapidly over time. To ease interpretation, it might be convenient to restrict covariates in the logit risk model to slow-moving, stable covariates in order to produce stable risk estimates for subjects. 
 
-The last component to complete the likelihood is the choice of a distribution for the shape of the hazard rate. The \pkg{spduration} package implements two hazard rate shapes, Weibull\footnote{In the code, $f(t) = \alpha \lambda^{\alpha} t^{\alpha - 1} e^{-(\lambda t)^\alpha}$.} and log-logistic:
+The last component to complete the likelihood is the choice of a distribution for the shape of the hazard rate. The \pkg{spduration} package implements two hazard rate shapes, Weibull and log-logistic:
 
 \begin{eqnarray*}
 \textrm{Weibull} \\
@@ -174,21 +161,13 @@ loglog_model <- spdur(
   data=bscoup, distr="loglog", silent = TRUE)
 ```
 
-Using the \code{summary} function on either model object will produce standard output showing the model formula, estimates for the duration and risk equations, and test statistics with $p$-values. These can be exported by calling \code{xtable} directly on the "spdur" object to produce Table \ref{loglog-table}.
+Using the \code{summary} function on either model object will produce standard output showing the model formula, estimates for the duration and risk equations, and test statistics with $p$-values. These can be exported by calling \code{xtable} directly on the "spdur" object to produce Table 2.
 
 ```{r summary-table, include = TRUE, eval = FALSE}
 library("xtable")
 tbl <- xtable(loglog_model, caption="Coup model with log-logistic hazard",
               label="loglog_table")
 print(tbl, caption.placement="top", comment=FALSE, include.rownames=FALSE)
-```
-
-One may also use the \code{AIC} and \code{BIC} function to calculate the information criterion statistics for \code{spdur} objects. 
-
-```{r fit-stats}
-matrix(c(
-  AIC(weib_model), AIC(loglog_model), BIC(weib_model), BIC(loglog_model)
-  ), ncol = 2, dimnames = list(c("Weibull", "Loglog"), c("AIC", "BIC")))
 ```
 
 \begin{table}[ht]
@@ -216,12 +195,20 @@ Parameter & Estimate & StdErr & p \\
 \end{tabular}
 \end{table}
 
-The table shows estimates from the duration equation, beginning with the intercept, and then estimates from the risk equation. Interestingly, the coup risk variable has a rather large and statistically significant coefficient in the risk equation. 
+The table shows estimates from the duration equation, beginning with the intercept, and then estimates from the risk equation. The duration component of the model is in accelerated failure time form and the effect of coefficient estimates is on the log of expected time to failure. The negative coefficient for military regimes for example shows that the expected time to a coup is shorter in military regimes than non-military regimes, holding all other factors constant. In the risk equation positive coefficients mean higher risk of coup, and military regimes thus also have a higher risk of experiencing any coup at all. 
+
+One may also use the \code{AIC} and \code{BIC} function to calculate the information criterion statistics for \code{spdur} objects. In our example both models are close enough in both statistics to be indistinguishable, so we will continue to focus on the log-logistic form.
+
+```{r fit-stats}
+matrix(c(
+  AIC(weib_model), AIC(loglog_model), BIC(weib_model), BIC(loglog_model)
+  ), ncol = 2, dimnames = list(c("Weibull", "Loglog"), c("AIC", "BIC")))
+```
 
 The package also includes a function, \code{plot_hazard}, that can be used with an \code{spdur} object to plot the estimated hazard rate. \code{plot_hazard} plots the conditional hazard, which is the probability of survival conditional on the covariates in the risk and duration equations, and conditional on survival up to time $t$. The function calculates the estimated hazard rate as well as 90\% confidence intervals, which are produced by simulating values from the estimated sampling distributions of the model parameters. By default the function uses the mean values of the covariates during the simulations, but users can choose specific covariate values by entering them as vectors in the arguments \code{xvals} and \code{zvals}, which correspond to the covariates in the duration and risk equations, respectively. The command below creates the graph A in Figure \ref{hazard-ex}.
 
 ```{r hazard-ex-1, eval = FALSE}
-plot(loglog_model, type="hazard", main = "A")
+plot_hazard(loglog_model, main = "A")
 ```
 
 \begin{figure}
@@ -232,15 +219,16 @@ plot(loglog_model, type="hazard", main = "A")
 \end{center}
 \end{figure}
 
+As mean values are maybe not that interesting, we can also supply our values for a scenario of choice. The values are used in the same order that variables are specified in the equations used to estimate the models, which also corresponds to the order of variables in Table 2. Including an intercept term. This produces plot B in Figure \ref{hazard-ex}
+
 ```{r hazard-ex-2, eval = FALSE}
-plot(loglog_model, type="hazard", 
+plot_hazard(loglog_model, 
      xvals = c(1, 1, 10, 0.05), 
      zvals = c(1, 7, 8.64, 1, 1, 0.05, 0, 0),
      main = "B")
 ```
 
-
-Importantly, the package also includes functions to evaluate model predictions. The generic function \code{predict} can be used on an object of class \code{spdur} to generate several kinds of predictions, including the probability that an observation is ``at-risk'' and the probability of failure for a given time period. In addition, the generic \code{plot} function can be used on \code{spdur} objects to produce a separation plot [@greenhill2011separation], which is a graphical display for evaluating model predictions. The code below produces Figure \ref{insamp}.
+The hazard plots can also be called with \code{plot(..., type = "hazard")}. Without a type argument, \code{plot.spdur} will produce a separation plot, which is a graphical display for evaluating model predictions [@greenhill2011separation]. The code below produces Figure \ref{insamp}.
 
 ```{r, eval = FALSE}
 plot(weib_model)
@@ -256,6 +244,8 @@ plot(loglog_model)
 \end{figure}
 
 The option \code{endSpellOnly} is set to \code{FALSE} so that every observation, not only those at the end of a spell, is used in the plot. By default the \code{plot} function will calculate the conditional hazard for each observation. The separation plot sorts observations from left to right according to the predicted probability assigned by the model (higher values to the right), and shows each event/failure as red line, with non-events shown in beige. This makes it easy to see whether the model is assigning high probabilities of failure to actual cases of failure, and low probabilities to non-failures. 
+
+Underlying both plotting functions is the \code{predict} function, which can be used on an object of class \code{spdur} to generate several kinds of predictions, including the probability that an observation is ``at-risk'' and the probability of failure for a given time period.
 
 ## Out-of-sample testing
 
@@ -330,39 +320,6 @@ separationplot(loglog2_test_p, obs_y)
 \label{oos-sepplots}
 \end{center}
 \end{figure}
-
-Lastly, here is a comparision to regular logistic regression. 
-
-```{r logistic regression}
-glm_model2    <- glm(
-  coup ~ milreg + instab + regconf + couprisk + wealth + rwar + regconf + 
-    samerica + camerica,
-  data = coup_train, family = "binomial"
-)
-
-c(Weibull = AIC(weib_model2), 
-  Loglog = AIC(loglog_model2), 
-  Logistic = AIC(glm_model2))
-```
-
-
-```{r, eval = FALSE, include = FALSE}
-glm2_test_p   <- predict(glm_model2, newdata = coup_test, type = "response")
-glm2_test_p   <- glm2_test_p[!is.na(glm2_test_p)]
-
-obs_y <- coup_test[complete.cases(coup_test), "coup"]
-
-library("separationplot")
-separationplot(glm2_test_p,   obs_y)
-
-brier(obs_y, glm2_test_p)
-auc_roc(obs_y, glm2_test_p)
-auc_roc(obs_y, weib2_test_p)
-auc_roc(obs_y, loglog2_test_p)
-auc_pr(obs_y, glm2_test_p)
-auc_pr(obs_y, weib2_test_p)
-auc_pr(obs_y, loglog2_test_p)
-```
 
 \section{Censoring considerations}
 

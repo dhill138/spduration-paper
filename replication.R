@@ -38,8 +38,8 @@ print(tbl, caption.placement="top", comment=FALSE, include.rownames=FALSE)
 
 pdf("graphics/hazard-ex.pdf", height=4, width=8)
 par(mfrow = c(1, 2))
-plot(loglog_model, type="hazard", main = "A")
-plot(loglog_model, type="hazard", 
+plot_hazard(loglog_model, main = "A")
+plot_hazard(loglog_model, 
      xvals = c(1, 1, 10, 0.05), 
      zvals = c(1, 7, 8.64, 1, 1, 0.05, 0, 0),
      main = "B")

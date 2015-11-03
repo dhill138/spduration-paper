@@ -8,3 +8,5 @@ manuscript_cache/*
 *.log
 *.tex
 *.synctex.gz
+
+takeouts.R
