@@ -1,18 +1,30 @@
 ---
 author:
+  - name: Andreas Beger
+    affiliation: Duke University
+    address: >
+      Department of Political Science, Duke University
+      Durham, NC, USA
+    email: ab428@duke.edu
+    url: something
   - name: Daniel W. Hill
     affiliation: University of Georgia
     address: >
       First line
-      Second line
+      Athens, GA, USA
     email: dwhill@uga.edu
-    url: http://spia.uga.edu/directory/faculty_staff/hill-daniel
   - name: Nils W. Metternich
     affiliation: University College London
-  - name: Andreas Beger
-    affiliation: Duke University
+    address: >
+      First line
+      London, UK
+    email: n.metternich@ucl.ac.uk
   - name: Michael D. Ward
     affiliation: Duke University
+    address: >
+      Department of Political Science, Duke University
+      Durham, NC, USA
+    email: mw160@duke.edu
 title:
   formatted: "Splitting it up: the \\pkg{spduration} split-population duration regression package"
   # If you use tex in the formatted title, also supply version without
@@ -35,23 +47,23 @@ bibliography: spdur.bib
 
 # Introduction
 
-Duration models are an important class of statistical estimators that take into account the duration dependency of outcomes we are interested in. For example, the risk of dying is not independent of time. Newborns are at a great risk of dying, but as they grow older this risk declines and then gradually starts to increase again after the age of 9-10. This risk can be increased or decreased by behavioral (smoking, exercise, diet, etc) and structural factors (health care, regulations, urban vs rural, etc), but there is an underlying risk that is time dependent and impacts on all units. 
+Duration models are an important class of statistical estimators that take into account the duration dependency of outcomes we are interested in. For example, the risk of dying is not independent of time. Newborns are at a great risk of dying, but as they grow older this risk declines and then gradually starts to increase again after the age of 9-10. This risk can be increased or decreased by behavioral (smoking, exercise, diet) and structural factors (health care, regulations, urban vs rural), but there is an underlying risk that is time dependent and impacts on all units. 
 
 However, sometimes we are interested in situations in which not all units are at risk of dying, failing, or acquiring some new characteristic. Imagine we are interested in the risk of acquiring the flu. First, we might think that everyone is at risk of getting the flu and it just depends on individual behavior (e.g. good hygiene) and structural factors (e.g. workplace) whether individuals will acquire the flu. If this would be the case we could use a standard duration model and estimate how different factors impact on the baseline risk. But there might also be individuals who are immune to the flu, because they received a flu shot, had the same flu virus in the past year, or some other factors that makes it impossible for them to get sick. Given that this is the case we have two underlying populations: An at risk population and an immune one. If the immune population is relatively large, estimates using a standard duration model will be biased and predictions resulting from such a model inaccurate.
 
 # Immune populations and inference of duration processes
 
-Duration models, where the variable to be modeled describes a distribution of times until some event of interest, were originally developed in health and demographic research, where they grew naturally from life tables and survival records for medical patients. Basic formulations of such models, like the parametric exponential or Weibull regressions or semi-paramaetric Cox regression, implicitly assume that all subjects or units under observation, including right-censored observations, will eventually experience the event of interest. This assumption is outright wrong or at least disadvantageous in many substantive areas and empirical applications, where there instead is a sub-population of units or subjects that will never experience an event, and thus are effectively ``cured''. 
+Duration models, where the variable to be modeled describes a distribution of times until some event of interest, were originally developed in health and demographic research, where they grew naturally from life tables and survival records for medical patients. Basic formulations of such models, like the parametric exponential or Weibull regressions or semi-paramaetric Cox regression, implicitly assume that all subjects or units under observation, including right-censored observations, will eventually experience the event of interest. This assumption is wrong or at least disadvantageous in many substantive areas and empirical applications, where there instead is a sub-population of units or subjects that will never experience an event, and thus are effectively ``cured''. 
 
-This insight was realized as early as 1949 by @boag1949maximum and @berkson1952survival, who were researching survival rates in cancer patients following treatment, and were quite obviously some fraction of patients survived because their cancer was cured, while others relapsed after apparent remission due to levels of disease below detectable thresholds. As with conventional duration models, their origin in health and medicine has shaped the terminology conventionally used with such model, e.g. split-population duration models are sometimes also referred to in such contexts as cure rate models, and the basic concepts like survival and failure rates reference the survival of humans.
+This insight was realized as early as 1949 by @boag1949maximum and @berkson1952survival, who were researching survival rates in cancer patients, and where some fraction of patients survived because their cancer was cured, while others relapsed after apparent remission due to levels of disease below detectable thresholds. As with conventional duration models, their origin in health and medicine has shaped the terminology conventionally used with such model, e.g. split-population duration models are sometimes also referred to in such contexts as cure rate models, and the basic concepts like survival and failure rates reference the survival of humans.
 
 Yet the intuition underlying split-population duration models has led to applications in a broad range of subject areas outside demographics and medicine. In an early and foundational application that reached beyond medicine, @schmidt1989predicting examined criminal recidivism using data on close to 10,000 prisoners from the North Carolina prison system in the late 1970's and early 1980's to identify factors that influence whether a criminal lapses at all, and if so which factors are related to the amount of time between prison stints. This work already includes a full formulation of the model with independent covariates for both the duration equation and the risk or cure equation, although only with subject-specific covariates rather than time-varying covariates with multiple data points per subject.
 
-In a complementary set of research from public health, @douglas1994hazard use data from the US to model the age at which smokers started the habit, and @forster2001role examine the impact of tobacco taxes on smoking and quitting decisions. @deyoung2003failure, an economist, models the failure of new commercial banks in the US during the 1980's. Lastly, in our own domain, political science, @svolik2008authoritarian used a split-population duration framework to whether democratic regimes persist or slide back to authoritarianism, and when. Building on this effort, split-population duration models have also been used, along with other models, to produce regular predictions for five different forms of political conflict for the Integrated Crisis and Early Warning System (ICEWS) project [@ward2013learning] and to model irregular leadership changes for the Political Instability Task Force [PITF; @beger2014ensemble].
+In a complementary set of research from public health, @douglas1994hazard use data from the US to model the age at which smokers started the habit, and @forster2001role examine the impact of tobacco taxes on smoking and quitting decisions. @deyoung2003failure, an economist, models the failure of new commercial banks in the US during the 1980's. @svolik2008authoritarian used a split-population duration framework to whether democratic regimes persist or slide back to authoritarianism, and when. Building on this effort, split-population duration models have also been used, along with other models, to produce regular predictions for five different forms of political conflict for the Integrated Crisis and Early Warning System (ICEWS) project [@ward2013learning] and to model irregular leadership changes for the Political Instability Task Force [PITF; @beger2014ensemble].
 
 # Model development
 
-Conventional duration models assume that all subjects will eventually fail, if we can only observe them long enough. The likelihood for a data point with survival time $t$ is thus the failure rate at that time or the probability of survival beyond $t$, depending on whether the observation is right-censored ($1-\delta_i$) or not:
+Conventional duration models assume that all subjects will eventually fail, if we can only observe them long enough. The likelihood for a data point with survival time $t$ is thus the failure rate $f(t)$ at that time or the probability of survival beyond $t$, $S(t)$, depending on whether the subject has already experienced the event ($\delta_i$) or is right-censored ($1-\delta_i$):
 \begin{eqnarray}
 \mathcal{L} = \prod_{i=1}^N  \left( f(t_i)\right)^{\delta_i} \times \left( S(t_i) \right)^{1-\delta_i}
 \end{eqnarray}
@@ -106,13 +118,15 @@ For a given unconditional risk rate $\pi$, the probability that a particular cas
 
 The \pkg{spduration} package for \proglang{R} implements a split-population duration regression for data with time-varying covariates and with two options for the hazard rate shape, Weibull and log-logistic. The Weibull density allows for hazard rates that are increasing, constant, or decreasing over survival time, while the log-logistic density also can fit rates that have a peak at a particular survival time. 
 
-As an example to illustrate the package functionality, we will replicate and extend the model of coup onsets in @belkin2003toward. Belkin and Schofer's paper lends itself to re-analysis with a split-populuation duration model because they explicitly distinguish long-term structural risk factors for coups from more short-term triggering causes that can explain the timing of a coup in a regime at risk. They argue that many countries never experience coups because coups are effectvely impossible due to structural factors, while others that never experience coups are nevertheless at risk due to a different configuration of those same factors. Using language which fits nicely with the class of models described above, they say "Triggers are not the source of the original risk, and in the absence of structural causes, the presence of triggering factors alone cannot lead to a coup. Hence, triggers should not be equated with coup risk. Rather, they are factors that may determine the exact timing of a coup in regimes that suffer from high coup risk" [p. 598 @belkin2003toward]
+As an example to illustrate the package functionality, we will replicate and extend the model of coup onsets in @belkin2003toward. 
 
-Belkin and Schofer develop a measure of ``structural coup risk'' which incorporates factors such as the strength of democratic institutions and civil society, and a recent history of successful coups. They employ a logistic regression model which does not adequately capture the process described in the quote above, since it implicitly assumes that all observations are at risk for a coup (i.e., the probability of a coup is non-zero for all observations). Their structural coup risk indicator is developed precisely to distinguish between cases where coups are possible and cases where they are not, so the split-population model allows one to examine whether the indicator effectively separates at-risk cases from cases where coups are impossible. 
+Belkin and Schofer's paper lends itself to re-analysis with a split-populuation duration model because they explicitly distinguish long-term structural risk factors for coups from more short-term triggering causes that can explain the timing of a coup in a regime at risk. They argue that many countries never experience coups because coups are effectvely impossible due to structural factors, while others that never experience coups are nevertheless at risk due to a different configuration of those same factors. Using language which fits nicely with the class of models described above, they say "[t]riggers are not the source of the original risk, and in the absence of structural causes, the presence of triggering factors alone cannot lead to a coup. Hence, triggers should not be equated with coup risk. Rather, they are factors that may determine the exact timing of a coup in regimes that suffer from high coup risk" [@belkin2003toward, p. 598].
+
+For their empirical test Belkin and Schofer develop a measure of ``structural coup risk'' which incorporates factors such as the strength of democratic institutions and civil society, and a recent history of successful coups, but the model itself is implemented using a logistic regression model. This does not adequately capture the process described in the quote above, since it implicitly assumes that all observations are at risk for a coup (i.e., the probability of a coup is non-zero for all observations). Their structural coup risk indicator is developed precisely to distinguish between cases where coups are possible and cases where they are not, so the split-population model allows one to examine whether the indicator effectively separates at-risk cases from cases where coups are impossible. 
 
 We begin by loading the package and the Belkin and Schofer replication data, and formatting the data to add several variables needed by the split-population duration model. 
 
-```{r data}
+```{r data, warning=FALSE}
 library("spduration")
 data(bscoup)
 bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
@@ -130,15 +144,15 @@ Within the framework of duration modeling, these data conceptually consist of "s
 \label{tab-ex}
 \begin{tabular}{lrrrrr} \toprule
 Country & Year & Coup & Spell ID & Duration \\ \midrule
-A & 1960 & 0 & 1 & 0  \\ 
-A & \ldots & 0 & 1 & \ldots \\
-A & 1980 & 1 & 1 & 20 \\ \midrule
-A & 1981 & 0 & 2 & 0 \\
-A & \ldots & 0 & 2 & \ldots \\
-A & 2000 & 0 & 2 & 19  \\ \midrule
-B & 1960 & 0 & 3 & 0 \\
-B & \ldots & \ldots & 3 & \ldots \\ 
-B & 2000 & 0 & 3 & 40 \\ \bottomrule
+Portugal & 1960 & 0 & 1 & 1  \\ 
+\ldots & \ldots & 0 & 1 & \ldots \\
+\ldots & 1975 & 1 & 1 & 16 \\ \midrule
+Portugal & 1976 & 0 & 2 & 1 \\
+\ldots & \ldots & 0 & 2 & \ldots \\
+\ldots & 2000 & 0 & 2 & 20  \\ \midrule
+Canada & 1960 & 0 & 3 & 1 \\
+\ldots & \ldots & 0 & 3 & \ldots \\ 
+\ldots & 2000 & 0 & 3 & 41 \\ \bottomrule
 \end{tabular}
 \end{center}
 \end{table}
@@ -195,7 +209,7 @@ Parameter & Estimate & StdErr & p \\
 \end{tabular}
 \end{table}
 
-The table shows estimates from the duration equation, beginning with the intercept, and then estimates from the risk equation. The duration component of the model is in accelerated failure time form and the effect of coefficient estimates is on the log of expected time to failure. The negative coefficient for military regimes for example shows that the expected time to a coup is shorter in military regimes than non-military regimes, holding all other factors constant. In the risk equation positive coefficients mean higher risk of coup, and military regimes thus also have a higher risk of experiencing any coup at all. 
+Table \ref{loglog_table} shows estimates from the duration equation, beginning with the intercept, and then estimates from the risk equation. The duration component of the model is in accelerated failure time form and the effect of coefficient estimates is on the log of expected time to failure. The negative coefficient for military regimes for example shows that the expected time to a coup is shorter in military regimes than non-military regimes, holding all other factors constant. In the risk equation positive coefficients mean higher risk of coup, and military regimes thus also have a higher risk of experiencing any coup at all. 
 
 One may also use the \code{AIC} and \code{BIC} function to calculate the information criterion statistics for \code{spdur} objects. In our example both models are close enough in both statistics to be indistinguishable, so we will continue to focus on the log-logistic form.
 
@@ -340,9 +354,9 @@ Furthermore, in out-of-sample testing based on some kind of data partitioning sc
 \label{rates}
 \end{figure}
 
-Many outcomes in the area that we work in, political science and political violence more specifically, are rare events. Coups, the onset of war and civil war, mass killings, and so on are exceedingly rare events when one considers that most countries most of the time are stable. Figure \ref{rates} shows a few examples for published research that models binary outcomes. @fearon2003ethnicity is a very widely cited study of civil war onset that uses yearly observations of all major countries, and @beger2014ensemble is an example of the positive rates when moving to monthly data for a similar set of countries. The positive rates range from 5 to less than 0.2\% of all data points.  
+Many outcomes are rare events. Coups, the onset of war and civil war, mass killings, and so on are exceedingly rare events when one considers that most countries most of the time are stable. Figure \ref{rates} shows a few examples for published research that models binary outcomes. @fearon2003ethnicity is a widely cited study of civil war onset that uses yearly observations of all major countries; @beger2014ensemble is an example of the positive rates when moving to monthly data for a similar set of countries. The positive rates range from 5 to less than 0.2\% of all data points.  
 
-In the language of machine learning, we are dealing with highly imbalanced classes, this is a well-recognized problem and has led to the development or use of several specialized mixture models like zero-inflated Poisson and negative binomial regression for count data, and a zero-inflated ordered probit for ordinal outcomes [@bagozzi2015modeling]. Split-population duration regression provides another principled solution to the challenges posed by data in this domain, but, unlike other solutions to the sparse outcome problem, also addresses underlying temporal dynamics that are an important part of the non-independent data political scientists commonly use. 
+In the language of machine learning, we are dealing with highly imbalanced classes. It is a well-recognized problem and has led to the development or use of several specialized mixture models like zero-inflated Poisson and negative binomial regression for count data, and a zero-inflated ordered probit for ordinal outcomes [@bagozzi2015modeling]. Split-population duration regression provides another principled solution to the challenges posed by data in this domain, but, unlike other solutions to the sparse outcome problem, also addresses underlying temporal dynamics that are an important part of the non-independent data political scientists commonly use. 
 
 Split-population duration models are not only appealing in a technical sense, but they also match the logic or intuituion many analysts of politics use when they distinguish long-term risk factors from more fleeting triggering causes. The example we have used, @belkin2003toward, is a particularly clear illustration of how well the language of theorists maps onto the model intuition. 
 
