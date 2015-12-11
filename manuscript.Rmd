@@ -63,14 +63,14 @@ In a complementary set of research from public health, @douglas1994hazard use da
 
 # Model development
 
-Conventional duration models assume that all subjects will eventually fail, if we can only observe them long enough. The likelihood for a data point with survival time $t$ is thus the failure rate $f(t)$ at that time or the probability of survival beyond $t$, $S(t)$, depending on whether the subject has already experienced the event ($\delta_i$) or is right-censored ($1-\delta_i$):
+Conventional duration models assume that all subjects will eventually fail, die, or experience a specific outcome. The likelihood for a data point with survival time $t$ is thus the failure rate $f(t)$ at that time or the probability of survival beyond $t$, $S(t)$, depending on whether the subject has already experienced the event ($\delta_i$) or is right-censored ($1-\delta_i$):
 \begin{eqnarray}
 \mathcal{L} = \prod_{i=1}^N  \left( f(t_i)\right)^{\delta_i} \times \left( S(t_i) \right)^{1-\delta_i}
 \end{eqnarray}
 
-The major modeling question in this setting, which we will return to below, is the choice of a function to describe the evolution of the hazard rate $h(t) = \frac{f(t)}{S(t)}$ over time, e.g. with exponential, Weibull, or log-logistic densities. 
+The major modeling question in this setting, which we will return to below, is the choice of a function form (e.g. exponential, Weibull, or log-logistic) describing the underlying hazard rate $h(t) = \frac{f(t)}{S(t)}$ over time.
 
-The cumulative failure rate ($F(t) = 1 - S(t)$) over time converges to 1, meaning all subjects fail eventually. In the examples of applied research discussed above this assumption is untenable. Some cancer patients are cured after treatment, most young people never become regular smokers, and many contemporary states will not experience the kind of violence that persists in some parts of the world. The presence of a large sub-population which is not at risk for an event in practice will inflate estimates of the survival fraction, and reduce hazard estimates for all subjects by essentially, and falsely, distributing risk among subjects that genuinely will fail and those that are cured. A model will thus over predict hazard for subjects that are not at risk (cured), and under predict for those who are at risk of eventually experiencing the event of interest. 
+The cumulative failure rate ($F(t) = 1 - S(t)$) over time converges to 1, meaning all subjects fail eventually. In the examples of applied research discussed above this assumption is untenable. Some cancer patients are cured after treatment, most young people never become regular smokers, and many states will not experience the kind of violence that persists in other parts of the world. The presence of a large sub-population which is not at risk for an event, will in practice inflate estimates of the survival fraction, and reduce hazard estimates for all subjects. This is the case because the underlying risk is estimated based on subjects that genuinely will fail and those that are cured. Hence, such a model will over predict the hazard for subjects that are not at risk (cured), and under predict for those who are at risk of eventually experiencing the event of interest. 
 
 We can incorporate the presence of a sub-population, where we label the subpopulation at risk with $\pi$, by rewriting the likelihood as:\footnote{Usual presentation of the split-population duration framework in medical contexts focus on the ``cured'' subpopulation. In our applications events are typically rare and it thus is easier to emphasize the ``risk'' subpopulation. As risk $= 1 - $ cured, this difference is trivial.}
 
@@ -78,7 +78,7 @@ We can incorporate the presence of a sub-population, where we label the subpopul
 \mathcal{L}\{\theta|(t_{1}, \dots, t_{n})\} &= \prod_{i=1}^{N} \left(\pi_i f(t_i)\right)^{\delta_i} \times  \left((1-\pi_i) + \pi_i S(t_i)\right)^{1-\delta_i}
 \end{align}
 
-Crucially, this split-population framework is primarily useful in contexts where sub-populations are not clearly or easily identifiable. For example, there is a clear sub-population in a model of the age at first pregnancy for humans---men---which researchers can easily identify and exclude from their data. Much less clear are answers to questions such as whether a cancer patient is cured or not cured given that they have no visible signs of cancer following treatment or have hit the 5-year disease free survival mark. In such situations split-population models provide a way to infer membership in sub-populations in a probabilistic fashion. 
+Crucially, this split-population framework is primarily useful in contexts where sub-populations are not clearly or easily identifiable. For example, there is a clear sub-population in a model of the age at first pregnancy for humans---men---which researchers can easily identify and exclude from their data. Less clear are answers to questions such as whether a cancer patient is cured or not cured given that they have no visible signs of cancer following treatment or have hit the 5-year disease free survival mark. In such situations split-population models provide a way to infer sub-populations in a probabilistic fashion. 
 
 Early efforts focused only on the cure rate ($1 - \pi$) and treated it as a constant, but we can model membership in the subpopulation with its own covariates through a logistic link function:
 
@@ -86,7 +86,7 @@ Early efforts focused only on the cure rate ($1 - \pi$) and treated it as a cons
 \pi_i &= \frac{1}{1 + e^{-z_i \gamma}}
 \end{align}
 
-Where $z_i$ is a vector of covariates for a subject at a given time. For interpretation, it is important to note that with time-varying covariates, the risk (or cured) estimate for a subject is particular to a given time point rather than constant for that subject over all time periods in the spell.\footnote{We use ``spell'' to designate all time periods observed for a subject up to the failure time. Subjects can theoretically have multiple spells, e.g. cancer patients who go into remission and relapse more than once, or states that experience multiple civil war onsets over their history.} Depending on the covariates, the risk estimate for a subject can thus fluctuate rapidly over time. To ease interpretation, it might be convenient to restrict covariates in the logit risk model to slow-moving, stable covariates in order to produce stable risk estimates for subjects. 
+Where $z_i$ is a vector of covariates for a subject at a given time. For interpretation, it is important to note that with time-varying covariates, the risk (or cured) estimate for a subject is particular to a given time point rather than constant over all time periods in the spell.\footnote{We use ``spell'' to designate all time periods observed for a subject up to the failure time. Subjects can theoretically have multiple spells, e.g. cancer patients who go into remission and relapse more than once, or states that experience multiple civil wars over their history.} Depending on the covariates, the risk estimate for a subject can thus fluctuate over time. To ease interpretation, it might be convenient to restrict covariates in the logit risk model to slow-moving, stable covariates in order to produce stable risk estimates for subjects. 
 
 The last component to complete the likelihood is the choice of a distribution for the shape of the hazard rate. The \pkg{spduration} package implements two hazard rate shapes, Weibull and log-logistic:
 
@@ -103,14 +103,14 @@ The last component to complete the likelihood is the choice of a distribution fo
 
 Where $\lambda = e^{-x_i\beta}$ is a parameter of covariates. The Weibull density allows for hazard rates that are increasing, constant, or decreasing over survival time, while the log-logistic density also can fit rates that have a peak at a particular survival time.
 
-With these, the main quantity of interest is the conditional hazard $h(t, \pi)$, where both the risk/cure probabilities and hazard are conditional on survival to time $t$:
+Given the density distribution, the main quantity of interest is the conditional hazard $h(t, \pi)$, where both the risk/cure probabilities and hazard are conditional on survival to time $t$:
 
 \begin{eqnarray}
 h(t, \pi) = \frac{f(t, \pi)}{S(t, \pi)} & = & \frac{ \pi(t) \times f(t) }{ (1-\pi(t)) + \pi(t) \times S(t) } \\
  \pi(t) & = & \frac{ 1-\pi }{ S(t) + (1-\pi) (1 - S(t)) }
 \end{eqnarray}
 
-For a given unconditional risk rate $\pi$, the probability that a particular case with survival time $t$ is in the risk set decreases over time because an increasing number of surviving cases consist of immune or cured ($1-\pi$) cases that will never fail. In the hazard rate, the failure rate in the numerator is conditional on the probability that a case is in the risk set, given survival up to time $t$, and the numerator is an adjusted survivor function that accounts for the fraction of cured cases by time $t$, which is $1-\pi(t)$. 
+For a given unconditional risk rate $\pi$, the probability that a subject with survival time $t$ is in the risk set decreases over time, because an increasing number of surviving cases consist of immune or cured ($1-\pi$) cases that will never fail. In the hazard rate, the failure rate in the numerator is conditional on the probability that a case is in the risk set, given survival up to time $t$, and the numerator is an adjusted survivor function that accounts for the fraction of cured cases by time $t$, which is $1-\pi(t)$. 
 
 # Fit a split-population model on coups data
 
