@@ -257,7 +257,7 @@ Underlying both plotting functions is the \code{predict} function, which can be 
 
 ## Out-of-sample testing
 
-Finally, we demonstrate how to evaluate a model's out of sample predictions. We will use data from 1996 on as the test set, and the prior data for training. The \code{add_duration} function retrospectively codes the risk variable based on how a spell ended, and we therefore need to take care in how we add the duration variables for each data set. For the training data we need to subset the training set first so that coups in the tests set don't influence the risk coding in the training data. 
+Finally, we demonstrate how to evaluate a model's out of sample predictions. We will use data from 1996 onwards as the test set, and prior data for training purposes. The \code{add_duration} function retrospectively codes the risk variable based on how a spell ended, and we therefore need to take care in how we add the duration variables for each data set. For the training data we need to subset the training set first, so that coups in the tests set don't influence the risk coding in the training data. 
 
 ```{r, eval = FALSE}
 data(bscoup)
@@ -275,7 +275,7 @@ coup_train <- add_duration(coup_train, "coup", unitID="countryid", tID="year",
                           freq="year", ongoing = FALSE)
 ```
 
-For the test set it is better to add the duration variables and *then* subset the test set. Since the test set is later in time than the training set we do not have to worry about contamination of the risk coding, but if we subset the data before building the duration variables we will start all duration counters at 1996, when in fact we can safely use the previous historic coup information. To do this we need to build the duration variables first:
+For the test set it is recommended to add the duration variables and *then* subset the test set. Since the test set is later in time than the training set we do not have to worry about contamination of the risk coding, but if we subset the data before building the duration variables we will start all duration counters at 1996, when in fact we can safely use the previous historic coup information. To do this we need to build the duration variables first:
 
 ```{r, include = FALSE}
 coup_test  <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
@@ -331,13 +331,13 @@ separationplot(loglog2_test_p, obs_y)
 
 \section{Censoring considerations}
 
-Truncation and censoring are problematic for split-population duration models as they are for standard duration regression, but also pose some additional considerations. In left-truncation, we do not observe data for a spell prior to some date, and thus have incomplete and inaccurate values for the duration or time to failure for a spell. Since immune spells in the sample are over time going to distinguish themselves with exceptionally long survival times compared to spells at risk which fail periodically, left-censoring also makes it more difficult to distinguish the immune and at risk subpopulations. 
+Truncation and censoring are problematic for split-population duration models, as they are for standard duration regression, but also pose some additional considerations. In left-truncation, we do not observe data for a spell prior to some date, and thus have incomplete and inaccurate values for the duration or time to failure for a spell. Since immune spells in the sample are over time going to distinguish themselves with exceptionally long survival times compared to spells at risk which fail periodically, left-censoring also makes it more difficult to distinguish the immune and at risk subpopulations. 
 
 Sometimes information about previous failures in the data is available beyond the time period over which covariates are observed, making it possible to ameliorate or eliminate left-censoring by using the information of previous failures when constructing the necessary duration variables with \code{add\_duration()}. 
 
 Right-censoring, where spells end before outcomes are observed, also pose a unique problem in the split-population framework. Although right-censored spells themselves are accommodated in the modeling function, they impact the coding of at risk vs. immune spells. The \code{add\_duration()} function retroactively codes all observations in a spell as at risk if the spell itself ended in failure. Right-censored spells are coded as immune over their entire duration. This can lead to some misclassification of observations as immune even though they experience failure at some point in the unobserved future. 
 
-Furthermore, in out-of-sample testing based on some kind of data partitioning scheme, this coding scheme can lead to unintentioned contamination of in-sample cases with knowledge of out-of-sample failures through the risk coding for failed spells. This leads to two recommendations. First, the duration data (`add_duration`) should not be built until after partitioning the data. Secondly, and as a result of the first point, data should be partitioned in a scheme that samples either by spell or block-wise, e.g. by witholding the last **x** years of data, in order to be able to proberly build the duration variables. 
+Furthermore, in out-of-sample testing based on some kind of data partitioning scheme, this coding scheme can lead to unintentioned contamination of in-sample cases with knowledge of out-of-sample failures through the risk coding for failed spells. This leads to two recommendations. First, the duration data (`add_duration`) should not be built until after partitioning the data. Secondly, and as a result of the first point, data should be partitioned in a scheme that samples either by spell or block-wise, e.g. by witholding the last **x** years of data, in order to properly build the duration variables. 
 
 # Conclusion
 
@@ -348,10 +348,10 @@ Furthermore, in out-of-sample testing based on some kind of data partitioning sc
 \label{rates}
 \end{figure}
 
-Many outcomes of interest are rare events. Coups, the onset of war and civil war, mass killings, and so on are exceedingly rare events when one considers that most countries most of the time are stable. Figure \ref{rates} shows a few examples for published research that models binary outcomes. @fearon2003ethnicity is a widely cited study of civil war onset that uses yearly observations of all major countries; @beger2014ensemble is an example of the positive rates when moving to monthly data for a similar set of countries. The positive rates range from 5 to less than 0.2\% of all data points.  
+Many outcomes of interest are rare events. For example, coups, war onset, or mass killings are exceedingly rare events when considering that most countries do not experience high levels of violence. Figure \ref{rates} shows a few examples of published research that models binary outcomes. @fearon2003ethnicity is a widely cited study of civil war onset that uses yearly observations of all major countries; @beger2014ensemble is an example of the positive rates when moving to monthly data for a similar set of countries. The positive rates range from 5 to less than 0.2\% of all data points.  
 
-In the language of machine learning, we are dealing with highly imbalanced classes. It is a well-recognized problem and has led to the development or use of several specialized mixture models like zero-inflated Poisson and negative binomial regression for count data, and a zero-inflated ordered probit for ordinal outcomes [@bagozzi2015modeling]. Split-population duration regression provides another principled solution to the challenges posed by data in this domain, but, unlike other solutions to the sparse outcome problem, also addresses underlying temporal dynamics that are an important part of the non-independent data political scientists commonly use. 
+In the language of machine learning, we are dealing with highly imbalanced classes. It is a well-recognized problem and has led to the development or use of several specialized mixture models like zero-inflated Poisson and negative binomial regression for count data, and a zero-inflated ordered probit for ordinal outcomes [@bagozzi2015modeling]. Split-population duration regression provides another principled solution to the challenges posed by data in this domain, but, unlike other solutions to the sparse outcome problem, also addresses underlying temporal dynamics that are an important part of the non-independent data political scientists and other social scientists commonly use. 
 
-Split-population duration models are not only appealing in a technical sense, but they also match the logic or intuituion many analysts of politics use when they distinguish long-term risk factors from more fleeting triggering causes. The example we have used, @belkin2003toward, is a particularly clear illustration of how well the language of theorists maps onto the model intuition. 
+Split-population duration models are not only appealing in a technical sense, but they also match the logic or intuition many social scientists use when they distinguish long-term risk factors from more fleeting triggering causes. The example we have used, @belkin2003toward, is a particularly clear illustration of how well the language of theorists maps onto the model intuition. 
 
 # References
