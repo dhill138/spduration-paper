@@ -10,15 +10,21 @@ author:
   - name: Daniel W. Hill, Jr.
     affiliation: University of Georgia
     address: >
-      First line
+      Department of International Affairs, University of Georgia
       Athens, GA, USA
     email: dwhill@uga.edu
   - name: Nils W. Metternich
     affiliation: University College London
     address: >
-      First line
+      Department of Political Science, University College London
       London, UK
     email: n.metternich@ucl.ac.uk
+  - name: Shahryar Minhas
+    affiliation: Duke University
+    address: >
+      Department of Political Science, Duke University
+      Durham, NC
+    email: sfm12@duke.edu
   - name: Michael D. Ward
     affiliation: Duke University
     address: >
