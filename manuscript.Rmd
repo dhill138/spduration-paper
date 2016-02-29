@@ -322,8 +322,8 @@ library("separationplot")
 obs_y <- coup_test[complete.cases(coup_test), "coup"]
 
 par(mfrow=c(2,1),mar=c(2,2,2,2))
-separationplot(weib2_test_p,   obs_y)
-separationplot(loglog2_test_p, obs_y)
+separationplot(weib2_test_p,   obs_y, newplot = FALSE)
+separationplot(loglog2_test_p, obs_y, newplot = FALSE)
 ```
 
 
