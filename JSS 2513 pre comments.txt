@@ -1,0 +1,61 @@
+JSS 2513: Beger, Hill, Metternich, Minhas, Ward
+
+Splitting it up: the spduration split-population duration regression package
+
+---------------------------------------------------------
+For further instructions on JSS style requirements please see the Style Files (in particular section 2.1 Style Checklist of jss.pdf) and FAQ at http://www.jstatsoft.org/about/submissions.
+
+For further examples please see RECENT JSS papers.
+---------------------------------------------------------
+
+
+From the editorial team:
+
+o The style instructions have not been taken into account appropriately. An \AND rather \And is needed somewhere in \author. Code is not formatted correctly. The bibliography must be produced via BibTeX. (See additional comments below.)
+
+o The xtable for Figure 2 lacks math markup for negative numbers. Also row labels need \code markup for JSS and column labels could be formatted better.
+
+o There should be some discussion of software for related purposes (including references), pointing out relative (dis)advantages.
+
+o Some standard methods are available for spdur objects but more would be desired, e.g., coef, vcov, possibly fitted, residuals, model.matrix etc.
+
+o The replication material does not seem to be complete. Please provide all additional files needed to successfully run the code. It should then also be stated how these data files could be generated / how they were obtained.
+
+o The source package (.tar.gz) rather than the git .zip should be included in the submission.
+
+
+Manuscript style comments:
+
+o Title should be in title style (do capitalize all principal words and the first word after a colon).
+
+o For the code layout in R publications, we typically distinguish input/output using Sinput/Soutput (or equivalently CodeInput/CodeOutput). Unless there are special reasons to format it differently, the input should use the “R>” command prompt and the text width (up to 76 or 77 characters), and be indented by two spaces, e.g.,
+
+begin{Sinput}
+R> example_model <- lm(response ~ variable1 + variable2 + variable3, 
++    weights = w, data = mydata)
+\end{Sinput}
+
+o Code should have enough spaces to facilitate reading.  Please include spaces before and after operators and after commas (unless spaces have syntactical meaning).
+
+o If using "e.g." and "i.e." add a comma after the period to keep LaTeX from interpreting them as the end of a sentence, i.e.: "e.g., " and "i.e., ".
+
+o All captions should appear below the corresponding figure/table. The captions should be in sentence style and end with a period.
+
+o As a reminder, please make sure that:
+	- \proglang, \pkg and \code have been used for highlighting throughout the paper (including titles and references), except where explicitly escaped.
+
+
+References:
+
+o Journal of the Royal Statistical Society B (not: Journal of the Royal Statistical Society. Series B)
+
+o Please make sure that all software packages are \cite{}'d properly.
+
+o All references should be in title style.
+
+o See FAQ for specific reference instructions.
+
+
+Code:
+
+o As mentioned above, please make sure that the files needed to replicate all code/examples within the manuscript are included in a standalone replication script.

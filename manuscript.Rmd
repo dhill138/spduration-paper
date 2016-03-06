@@ -51,6 +51,11 @@ output:
 bibliography: spdur.bib
 ---
 
+```{r}
+stop("I've started editing the tex manually")
+```
+
+
 # Introduction
 
 Duration models are an important class of statistical estimators that take into account the duration dependency of specific outcomes. A prominent example is that the risk of dying depends on the age of an individual. Newborns are at a greater risk of dying, but as they grow older this risk quickly declines and then gradually starts to increase again after the age of 9-10. While individual behavior (smoking, exercising, diet) and structural factors (health care, health regulations, urban vs rural) can increase or decrease the probability of dying over time, the underlying risk is time dependent and impacts on all individuals. 
@@ -126,7 +131,7 @@ For their empirical test Belkin and Schofer develop a measure of "structural cou
 
 We begin by loading the package and the Belkin and Schofer replication data, and formatting the data to add several variables needed by the split-population duration model. 
 
-```{r data, warning=FALSE}
+```{r data, warning=FALSE, include=FALSE}
 library("spduration")
 data(bscoup)
 bscoup$coup <- ifelse(bscoup$coup == "yes", 1, 0)
@@ -153,7 +158,7 @@ Canada & 1960 & 0 & 3 & 1 \\
 \ldots & 2000 & 0 & 3 & 41 \\ \bottomrule
 \end{tabular}
 \end{center}
-\caption{Example data frame with select duration variables} \label{tab-ex}
+\caption{Example data frame with select duration variables.} \label{tab-ex}
 \end{table}
 
 The \code{add_duration} functions identifies spells in the data and returns the data frame with several additional variables needed for estimation. The most important among these are a counter of elapsed time in a spell, "duration". It also codes that a spell was at risk ("atrisk==1") if it ended in a failure event, and not at risk otherwise.   These are then used as response variables for the formula in the \code{spdur} function. 
@@ -204,7 +209,7 @@ Parameter & Estimate & StdErr & p \\
   camerica & -0.39 & 0.73 & 0.59 \\ 
    \hline
 \end{tabular}
-\caption{Coup model with log-logistic hazard} \label{loglog_table}
+\caption{Coup model with log-logistic hazard.} \label{loglog_table}
 \end{table}
 
 Table \ref{loglog_table} shows estimates from the duration equation, beginning with the intercept, and then estimates from the risk equation. The duration component of the model is in accelerated failure time format and the coefficient estimates are on the log of expected time to failure. The negative coefficient for military regimes for example means that the expected time to a coup is shorter in military regimes than non-military regimes, holding all other factors constant. In the risk equation, positive coefficients mean higher risk of coup. Thus, military regimes have a higher risk of experiencing a coup. 
@@ -250,7 +255,7 @@ plot(loglog_model)
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.8\textwidth]{graphics/sepplots.pdf}
-\caption{In-sample separation plots of Weibull and log-logistic model conditional hazard predictions}
+\caption{In-sample separation plots of Weibull and log-logistic model conditional hazard predictions.}
 \label{insamp}
 \end{center}
 \end{figure}
@@ -328,7 +333,7 @@ separationplot(loglog2_test_p, obs_y, newplot = FALSE)
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.8\textwidth]{graphics/oos-sepplots.pdf}
-\caption{Out-of-sample separation plots}
+\caption{Out-of-sample separation plots.}
 \label{oos-sepplots}
 \end{center}
 \end{figure}
@@ -348,7 +353,7 @@ Furthermore, as the example above shows, in out-of-sample testing based on some 
 \begin{figure}[htbp!]
 \centering
 \includegraphics[width = 4in]{graphics/rates.pdf}
-\caption{Rates of positive outcomes in select publications with binary outcomes}
+\caption{Rates of positive outcomes in select publications with binary outcomes.}
 \label{rates}
 \end{figure}
 
