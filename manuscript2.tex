@@ -8,19 +8,19 @@
 \author{
 Andreas Beger\\Duke University \And Daniel W. Hill, Jr.\\University of Georgia \And Nils W. Metternich\\University College London \AND Shahryar Minhas\\Duke University \And Michael D. Ward\\Duke University
 }
-\title{Splitting it Up: The \pkg{spduration} Split-population Duration
+\title{Splitting It Up: The \pkg{spduration} Split-Population Duration
 Regression Package}
 
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Andreas Beger, Daniel W. Hill, Jr., Nils W. Metternich, Shahryar Minhas, Michael D. Ward}
-\Plaintitle{Splitting it up: the spduration split-population duration regression
-package}
-\Shorttitle{\pkg{spduration}: Split-population duration regression}
+\Plaintitle{Splitting It Up: The spduration Split-Population Duration Regression
+Package}
+\Shorttitle{\pkg{spduration}: Split-Population Duration Regression}
 
 %% an abstract and keywords
 \Abstract{
 We present an implementation of split-population duration regression in
-the \pkg{spduration} \proglang{R} package and an application to data on military
+the \pkg{spduration} \citep{beger2016spduration} package for \proglang{R} \citep{rstats2016} and an application to data on military
 coups. The statistical model accounts for units that are immune to a
 certain outcome and not part of the duration process the researcher is
 primarily interested in. We provide insights that if immune units exist,
@@ -316,10 +316,77 @@ split-population duration model.
 \begin{CodeInput}
 R> library("spduration")
 R> data(bscoup)
+R> ?bscoup
+R> head(bscoup[, 1:5])
+\end{CodeInput}
+\begin{CodeOutput}
+  countryid year  couprisk recentcoups rwar
+1       909 1960 0.2200166           0    0
+2       909 1961 0.2200166           0    0
+3       909 1962 0.2200166           0    0
+4       909 1963 0.2200166           0    0
+5       909 1964 2.5702426           1    0
+6       909 1965 2.5702426           2    0
+\end{CodeOutput}
+\end{CodeChunk}
+
+The data are documented in `?bscoup`, which also gives a reference to the source citation. It consists of a little more than 5,000 observations of 162 countries from 1960 to 2000. Each row corresponds to a country $c$ in year $t$. Excluding the country and year identifiers, the data include 12 variables, including a binary indicator for successful coups. 
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> str(bscoup)
+\end{CodeInput}
+\begin{CodeOutput}
+'data.frame':	5463 obs. of  14 variables:
+ $ countryid  : num  909 909 909 909 909 909 909 920 920 920 ...
+ $ year       : num  1960 1961 1962 1963 1964 ...
+ $ couprisk   : num  0.22 0.22 0.22 0.22 2.57 ...
+ $ recentcoups: num  0 0 0 0 1 2 4 0 0 0 ...
+ $ rwar       : num  0 0 0 0 0 0 1 0 0 0 ...
+ $ milreg     : num  0 0 0 1 0 1 1 0 0 0 ...
+ $ wealth     : num  NA NA NA NA NA ...
+ $ instab     : num  4 2 9 9 12 13 12 NA 0 4 ...
+ $ coup       : Factor w/ 2 levels "no","yes": 1 1 1 2 2 2 1 1 1 1 ...
+ $ africa     : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ eurnam     : num  0 0 0 0 0 0 0 1 1 1 ...
+ $ samerica   : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ camerica   : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ regconf    : num  0 0 0 0.019 0.019 ...
+ - attr(*, "datalabel")= chr ""
+ - attr(*, "time.stamp")= chr "30 Jul 2003 12:15"
+ - attr(*, "formats")= chr  "%9.0g" "%9.0g" "%9.0g" "%9.0g" ...
+ - attr(*, "types")= int  102 102 102 102 102 102 102 102 102 102 ...
+ - attr(*, "val.labels")= chr  "" "" "" "" ...
+ - attr(*, "var.labels")= chr  "country code .pr89" "year coded" "" "" ...
+ - attr(*, "version")= int 7
+ - attr(*, "label.table")=List of 1
+  ..$ hadcoup: Named int  0 1
+  .. ..- attr(*, "names")= chr  "no" "yes"
+\end{CodeOutput}
+\begin{CodeInput}
 R> bscoup$coup <- ifelse(bscoup$coup == "yes", 1, 0)
+R> table(bscoup$coup)
+\end{CodeInput}
+\begin{CodeOutput}
+   0    1
+5173  290 
+\end{CodeOutput}
+\end{CodeChunk}
+
+Alltogether the data include 290 coups, which makes for a positive rate of slightly more than 5\% of all observations. 
+
+Before we can estimate a split-population duration model with the data, we need to add several variables that capture the survival characteristics of the data.
+
+\begin{CodeChunk}
+\begin{CodeInput}
 R> bscoup <- add_duration(bscoup, "coup", unitID = "countryid", 
 +    tID = "year", freq = "year", ongoing = FALSE)
 \end{CodeInput}
+\begin{CodeOutput}
+Warning message:
+In attempt_date(data[, tID], freq) :
+  Converting to 'Date' class with yyyy-06-30
+\end{CodeOutput}
 \end{CodeChunk}
 
 The \code{add\_duration} function takes as input a data frame with a
@@ -370,7 +437,10 @@ the \code{spdur} function.
 Though the data used in this example are recorded annually, the function
 supports annual, monthly, or daily data and will try to convert the
 \code{tID} input to class ``Date'' given the provided argument in
-\code{freq}. Another important question is how to handle consecutive 1's
+\code{freq}, as indicated by the warning it returned in the example above. This 
+can be avoided by converting any numeric dates to \proglang{R} \code{Date}s first.
+
+Another important question is how to handle consecutive 1's
 in the response variable provided. This is controlled with the
 \code{ongoing} argument. In some cases like civil war occurrence, the
 \emph{y} variable records all years during which a country experienced a
@@ -407,7 +477,7 @@ R> loglog_model <- spdur(
 Using the \code{summary} function on either model object will produce
 standard output showing the model formula, estimates for the duration
 and risk equations, and test statistics with \(p\)-values. These can be
-exported by calling \code{xtable} directly on the ``spdur'' object to
+exported by calling \code{xtable}\citep[see][]{dahl2016xtable} directly on the ``spdur'' object to
 produce Table 2.
 
 \begin{CodeChunk}
@@ -422,26 +492,27 @@ R> print(tbl, caption.placement = "top", comment = FALSE,
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{lrrr}
+\begin{tabular}{lrrrr}
   \hline
-Parameter & Estimate & StdErr & p \\ 
+Parameter & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
   \hline
-(Dur. Intercept) & 2.40 & 0.21 & 0.00 \\ 
-  milreg & $-$1.13 & 0.21 & 0.00 \\ 
-  instab & $-$0.09 & 0.02 & 0.00 \\ 
-  regconf & $-$2.52 & 2.16 & 0.24 \\ 
-  log(alpha) & $-$0.45 & 0.06 & 0.00 \\ 
-  (Risk Intercept) & 2.93 & 1.87 & 0.12 \\ 
-  couprisk & 0.59 & 0.32 & 0.07 \\ 
-  wealth & $-$0.36 & 0.28 & 0.20 \\ 
-  milreg.1 & 10.82 & 9.31 & 0.25 \\ 
-  rwar & $-$0.52 & 0.94 & 0.58 \\ 
-  regconf.1 & $-$5.43 & 5.62 & 0.33 \\ 
-  samerica & 2.09 & 1.45 & 0.15 \\ 
-  camerica & $-$0.39 & 0.73 & 0.59 \\ 
+Dur\_(Intercept) & 2.40 & 0.21 & 11.43 & 0.00 \\ 
+  Dur\_milreg & $-$1.13 & 0.21 & $-$5.46 & 0.00 \\ 
+  Dur\_instab & $-$0.09 & 0.02 & $-$4.79 & 0.00 \\ 
+  Dur\_regconf & $-$2.52 & 2.16 & $-$1.16 & 0.24 \\ 
+  log(alpha) & $-$0.45 & 0.06 & $-$7.09 & 0.00 \\ 
+  Risk\_(Intercept) & 2.93 & 1.87 & 1.57 & 0.12 \\ 
+  Risk\_couprisk & 0.59 & 0.32 & 1.82 & 0.07 \\ 
+  Risk\_wealth & $-$0.36 & 0.28 & $-$1.29 & 0.20 \\ 
+  Risk\_milreg & 10.82 & 9.31 & 1.16 & 0.25 \\ 
+  Risk\_rwar & $-$0.52 & 0.94 & $-$0.56 & 0.58 \\ 
+  Risk\_regconf & $-$5.43 & 5.62 & $-$0.97 & 0.33 \\ 
+  Risk\_samerica & 2.09 & 1.45 & 1.45 & 0.15 \\ 
+  Risk\_camerica & $-$0.39 & 0.73 & $-$0.53 & 0.59 \\ 
    \hline
 \end{tabular}
-\caption{Coup model with log-logistic hazard.} \label{loglog_table}
+\caption{Coup model with log-logistic hazard.} 
+\label{loglog_table}
 \end{table}
 
 Table~\ref{loglog_table} shows estimates from the duration equation,
@@ -473,14 +544,32 @@ Loglog  1331.214 1350.278
 \end{CodeOutput}
 \end{CodeChunk}
 
-The package also includes a function, \code{plot_hazard}, that can be
-used with an \code{spdur} object to plot the estimated hazard rate.
-\code{plot_hazard} plots the conditional hazard, which is the
-probability of survival conditional on the covariates in the risk and
-duration equations, and conditional on survival up to time \(t\). The
-function calculates the estimated hazard rate as well as 90\% confidence
+The package includes two types of plots that show the estimated hazard rates and 
+predictive performance, respectively. The hazard rates can be plotted by either 
+calling \code{plot_hazard} directly, or with \code{plot(x, type = "hazard")}, on
+a fitted \code{spdur} object. It will produce a plot of the conditional hazard, which is the probability of survival conditional on the covariates in the risk and
+duration equations, and conditional on survival up to time \(t\), when holding
+all covariates at their sample means. The
+function calculates the average hazard rate as well as 90\% confidence
 intervals, which are produced by simulating values from the estimated
-sampling distributions of the model parameters. By default the function
+sampling distributions of the model parameters. 
+
+\begin{CodeChunk}
+\begin{CodeInput}
+R> plot(weib_model,   type="hazard", main="Weibull")
+R> plot(loglog_model, type="hazard", main="Loglog")
+\end{CodeInput}
+\end{CodeChunk}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{graphics/hazard-rates.pdf}
+\caption{Hazard rate plots for the Weibull and Loglogistic coup models.}
+\label{hazard-ex}
+\end{center}
+\end{figure}
+
+By default the \code{plot_hazard} function
 uses the mean values of the covariates during the simulations, but users
 can choose specific covariate values by entering them as vectors in the
 arguments \code{xvals} and \code{zvals}, which correspond to the
@@ -515,9 +604,8 @@ R> plot_hazard(loglog_model, xvals = c(1, 1, 10, 0.05),
 \end{CodeInput}
 \end{CodeChunk}
 
-The hazard plots can also be called with
-\code{plot(..., type = "hazard")}. Without a type argument,
-\code{plot.spdur} will produce a separation plot, which is a graphical
+While \code{plot(x, type = "hazard")} will produce a hazard rate plot, without a type argument,
+\code{plot.spdur} will produce a separation plot. Separation plots are a graphical
 display for evaluating model predictions \citep{greenhill2011separation}. The code below produces Figure \ref{insamp}.
 
 \begin{CodeChunk}
@@ -631,7 +719,9 @@ R> separationplot(loglog2_test_p, obs_y, newplot = FALSE)
 \end{center}
 \end{figure}
 
-\section{Censoring considerations}
+\section{Additional discussion}
+
+\subsection{Censoring considerations}
 
 Truncation and censoring are problematic for split-population duration
 models, as they are for standard duration regression, but also pose some
@@ -670,9 +760,9 @@ non-independence induced through the duration and risk coding, care
 should be taken to ensure that duration data are built without access to
 future information in another data partition.
 
-\section{Alternative implementations}
+\subsection{Comparison with other software}
 
-The \pkg{survival} library, arguable the most well-established library for survival and event history analysis in \proglang{R}, allows for the estimation of a wide variet of semi-, non-, and parametric survival models, and provides facilities for handling and descriptive summaries of survival and event history data. It does not include cure rate or split-population mixture models of the type we have implemented though.
+The \pkg{survival} library \citep{thernau2000modeling, thernau2015survival}, arguable the most well-established library for survival and event history analysis in \proglang{R}, allows for the estimation of a wide variet of semi-, non-, and parametric survival models, and provides facilities for handling and descriptive summaries of survival and event history data. It does not include cure rate or split-population mixture models of the type we have implemented though.
 
 One interesting extension of our project in the future would be to integrate and adapt the \code{Surv} class for survival data in \pkg{survival} to the \pkg{spduration} library. This would require some modification of the class as our model also requires information on the risk status of spells, but would give access to the much broader functionality, especially for descriptive summaries of data, in the \pkg{survival} library. 
 

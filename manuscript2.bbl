@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{22}
 \newcommand{\enquote}[1]{``#1''}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
@@ -9,12 +9,24 @@
   \urlstyle{rm}\Url}\fi
 \providecommand{\eprint}[2][]{\url{#2}}
 
+\bibitem[{the(2000)}]{thernau2000modeling}
+ (2000).
+\newblock \emph{Modeling Survival Data: Extending the Cox Model}.
+\newblock Springer, New York.
+
 \bibitem[{Bagozzi \emph{et~al.}(2015)Bagozzi, Hill, Moore, and
   Mukherjee}]{bagozzi2015modeling}
 Bagozzi BE, Hill DW, Moore WH, Mukherjee B (2015).
 \newblock \enquote{Modeling Two Types of Peace The Zero-inflated Ordered Probit
   (ZiOP) Model in Conflict Research.}
 \newblock \emph{Journal of Conflict Resolution}, \textbf{59}(4), 728--752.
+
+\bibitem[{Beger \emph{et~al.}(2016)Beger, Chiba, Hill, Metternich, and
+  Minhas}]{beger2016spduration}
+Beger A, Chiba D, Hill D, Metternich N, Minhas S (2016).
+\newblock \emph{\pkg{spduration}: Split-population Duration (Cure) Regression}.
+\newblock \proglang{R}~package version~0.15.0,
+  \urlprefix\url{https://CRAN.R-project.org/package=spduration}.
 
 \bibitem[{Beger \emph{et~al.}(2014)Beger, Dorff, and Ward}]{beger2014ensemble}
 Beger A, Dorff CL, Ward MD (2014).
@@ -23,89 +35,109 @@ Beger A, Dorff CL, Ward MD (2014).
 
 \bibitem[{Belkin and Schofer(2003)}]{belkin2003toward}
 Belkin A, Schofer E (2003).
-\newblock \enquote{Toward a structural understanding of coup risk.}
+\newblock \enquote{Toward a Structural Understanding of Coup Risk.}
 \newblock \emph{Journal of Conflict Resolution}, \textbf{47}(5), 594--620.
 
 \bibitem[{Berkson and Gage(1952)}]{berkson1952survival}
 Berkson J, Gage RP (1952).
-\newblock \enquote{Survival curve for cancer patients following treatment.}
+\newblock \enquote{Survival Curve for Cancer Patients Following Treatment.}
 \newblock \emph{Journal of the American Statistical Association},
   \textbf{47}(259), 501--515.
 
 \bibitem[{Boag(1949)}]{boag1949maximum}
 Boag JW (1949).
-\newblock \enquote{Maximum likelihood estimates of the proportion of patients
-  cured by cancer therapy.}
+\newblock \enquote{Maximum Likelihood Estimates of the Proportion of Patients
+  Cured by Cancer Therapy.}
 \newblock \emph{Journal of the Royal Statistical Society B}, \textbf{11}(1),
   15--53.
 
 \bibitem[{Cai \emph{et~al.}(2012{\natexlab{a}})Cai, Zou, Peng, and
   Zhang}]{cai2012smcure}
 Cai C, Zou Y, Peng Y, Zhang J (2012{\natexlab{a}}).
-\newblock \enquote{smcure: An R-Package for estimating semiparametric mixture
-  cure models.}
+\newblock \enquote{\pkg{smcure}: An \proglang{R}-Package for Estimating
+  Semiparametric Mixture Cure Models.}
 \newblock \emph{Computer methods and programs in biomedicine}, \textbf{108}(3),
   1255--1260.
 
 \bibitem[{Cai \emph{et~al.}(2012{\natexlab{b}})Cai, Zou, Peng, and
   Zhang}]{cai2012smcureR}
 Cai C, Zou Y, Peng Y, Zhang J (2012{\natexlab{b}}).
-\newblock \enquote{smcure: Fit Semiparametric Mixture Cure Models.}
-\newblock R package version 2.0,
+\newblock \emph{\pkg{smcure}: Fit Semiparametric Mixture Cure Models}.
+\newblock \proglang{R}~package version~2.0,
   \urlprefix\url{https://CRAN.R-project.org/package=smcure}.
+
+\bibitem[{Dahl(2016)}]{dahl2016xtable}
+Dahl DB (2016).
+\newblock \emph{\pkg{xtable}: Export Tables to \proglang{LaTeX} or
+  \proglang{HTML}}.
+\newblock \proglang{R}~package version~1.8-2,
+  \urlprefix\url{https://CRAN.R-project.org/package=xtable}.
 
 \bibitem[{DeYoung(2003)}]{deyoung2003failure}
 DeYoung R (2003).
-\newblock \enquote{The failure of new entrants in commercial banking markets: a
-  split-population duration analysis.}
+\newblock \enquote{The Failure of New Entrants in Commercial Banking Markets: A
+  Split-Population Duration Analysis.}
 \newblock \emph{Review of Financial Economics}, \textbf{12}(1), 7--33.
 
 \bibitem[{Douglas and Hariharan(1994)}]{douglas1994hazard}
 Douglas S, Hariharan G (1994).
-\newblock \enquote{The hazard of starting smoking: estimates from a split
-  population duration model.}
+\newblock \enquote{The Hazard of Starting Smoking: Estimates From a Split
+  Population Duration Model.}
 \newblock \emph{Journal of health economics}, \textbf{13}(2), 213--230.
 
 \bibitem[{Fearon and Laitin(2003)}]{fearon2003ethnicity}
 Fearon JD, Laitin DD (2003).
-\newblock \enquote{Ethnicity, insurgency, and civil war.}
+\newblock \enquote{Ethnicity, Insurgency, and Civil War.}
 \newblock \emph{American Political Science Review}, \textbf{97}(1), 75--90.
 
 \bibitem[{Forster and Jones(2001)}]{forster2001role}
 Forster M, Jones AM (2001).
-\newblock \enquote{The role of tobacco taxes in starting and quitting smoking:
-  duration analysis of British data.}
+\newblock \enquote{The Role of Tobacco Taxes in Starting and Quitting Smoking:
+  Duration Analysis of British Data.}
 \newblock \emph{Journal of the Royal Statistical Society A}, \textbf{164}(3),
   517--547.
 
 \bibitem[{Greenhill \emph{et~al.}(2011)Greenhill, Ward, and
   Sacks}]{greenhill2011separation}
 Greenhill B, Ward MD, Sacks A (2011).
-\newblock \enquote{The separation plot: a new visual method for evaluating the
-  fit of binary models.}
+\newblock \enquote{The Separation Plot: A New Visual Method for Evaluating the
+  Fit of Binary Models.}
 \newblock \emph{American Journal of Political Science}, \textbf{55}(4),
   991--1002.
 
 \bibitem[{King and Zeng(2001{\natexlab{a}})}]{king2001explaining}
 King G, Zeng L (2001{\natexlab{a}}).
-\newblock \enquote{Explaining rare events in international relations.}
+\newblock \enquote{Explaining Rare Events in International Relations.}
 \newblock \emph{International Organization}, \textbf{55}(03), 693--715.
 
 \bibitem[{King and Zeng(2001{\natexlab{b}})}]{king2001logistic}
 King G, Zeng L (2001{\natexlab{b}}).
-\newblock \enquote{Logistic regression in rare events data.}
+\newblock \enquote{Logistic Regression in Rare Events Data.}
 \newblock \emph{Political analysis}, \textbf{9}(2), 137--163.
+
+\bibitem[{\proglang{R} Core~Team(2016)}]{rstats2016}
+\proglang{R} Core~Team (2016).
+\newblock \emph{\proglang{R}: A Language and Environment for Statistical
+  Computing}.
+\newblock \proglang{R} Foundation for Statistical Computing, Vienna, Austria,
+  \urlprefix\url{https://www.r-project.org}.
 
 \bibitem[{Schmidt and Witte(1989)}]{schmidt1989predicting}
 Schmidt P, Witte AD (1989).
-\newblock \enquote{Predicting criminal recidivism using split population
-  survival time models.}
+\newblock \enquote{Predicting Criminal Recidivism Using Split Population
+  Survival Time Models.}
 \newblock \emph{Journal of Econometrics}, \textbf{40}(1), 141--159.
 
 \bibitem[{Svolik(2008)}]{svolik2008authoritarian}
 Svolik M (2008).
-\newblock \enquote{Authoritarian reversals and democratic consolidation.}
+\newblock \enquote{Authoritarian Reversals and Democratic Consolidation.}
 \newblock \emph{American Political Science Review}, \textbf{102}(2), 153--168.
+
+\bibitem[{Thernau(2015)}]{thernau2015survival}
+Thernau TM (2015).
+\newblock \emph{A Package for Survival Analysis in \proglang{S}}.
+\newblock \proglang{R}~package version~2.38,
+  \urlprefix\url{http://CRAN.R-project.org/package=survival}.
 
 \bibitem[{Ward \emph{et~al.}(2013)Ward, Metternich, Dorff, Gallop, Hollenbach,
   Schultz, and Weschle}]{ward2013learning}

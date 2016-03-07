@@ -9,9 +9,17 @@ library("scales")
 
 
 data(bscoup)
+?bscoup
+head(bscoup[, 1:5])
+
+str(bscoup)
+
 bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
-bscoup      <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
-                            freq="year", ongoing = FALSE)
+table(bscoup$coup)
+
+bscoup <- add_duration(bscoup, "coup", unitID="countryid", tID="year",
+                       freq="year", ongoing = FALSE)
+
 
 weib_model <- spdur(
   duration ~ milreg + instab + regconf,
@@ -29,9 +37,9 @@ matrix(c(
 
 
 library("xtable")
-tbl <- xtable(loglog_model, caption="Coup model with log-logistic hazard",
+tbl <- xtable(loglog_model, caption="Coup model with log-logistic hazard.",
               label="loglog_table")
-print(tbl, caption.placement="top", comment=FALSE, include.rownames=FALSE)
+print(tbl, caption.placement="bottom", comment=FALSE, include.rownames=FALSE)
 
 #   Plotting functions
 #   ____________________
@@ -114,7 +122,8 @@ glm_model2    <- glm(
 c(Weibull = AIC(weib_model2), 
   Loglog = AIC(loglog_model2), 
   Logistic = AIC(glm_model2))
-  
+
+
 #   Plot of positive rates in several published papers
 #   __________________________
 
