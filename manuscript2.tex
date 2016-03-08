@@ -373,7 +373,7 @@ R> table(bscoup$coup)
 \end{CodeOutput}
 \end{CodeChunk}
 
-Alltogether the data include 290 coups, which makes for a positive rate of slightly more than 5\% of all observations. 
+Altogether the data include 290 coups, which makes for a positive rate of slightly more than 5\% of all observations. 
 
 Before we can estimate a split-population duration model with the data, we need to add several variables that capture the survival characteristics of the data.
 
@@ -762,13 +762,13 @@ future information in another data partition.
 
 \subsection{Comparison with other software}
 
-The \pkg{survival} library \citep{thernau2000modeling, thernau2015survival}, arguable the most well-established library for survival and event history analysis in \proglang{R}, allows for the estimation of a wide variet of semi-, non-, and parametric survival models, and provides facilities for handling and descriptive summaries of survival and event history data. It does not include cure rate or split-population mixture models of the type we have implemented though.
+The \pkg{survival} library \citep{thernau2000modeling, thernau2015survival}, arguably the most well-established library for survival and event history analysis in \proglang{R}, allows for the estimation of a wide variety of semi-, non-, and parametric survival models, and provides facilities for handling and descriptive summaries of survival and event history data. It does not include cure rate or split-population mixture models of the type we have implemented though.
 
 One interesting extension of our project in the future would be to integrate and adapt the \code{Surv} class for survival data in \pkg{survival} to the \pkg{spduration} library. This would require some modification of the class as our model also requires information on the risk status of spells, but would give access to the much broader functionality, especially for descriptive summaries of data, in the \pkg{survival} library. 
 
-Otherwise, the \pkg{smcure} package \citep{cai2012smcureR}, described in \citet{cai2012smcure}, appears to be the only alternative split-population/cure rate duration model implementation in \proglang{R}. It implements semi-parametric proportional hazards and accelerated failure time cure models. The semi-paramatric estimation of the hazard function shape obviates the need to make an assumption about its shape, which can be difficult in practice to empirically evalute, as the \pkg{smcure} discuss. However, it is much more limited in practical application as it only accomodates case-based data, not time-varying covariates. 
+Otherwise, the \pkg{smcure} package \citep{cai2012smcureR}, described in \citet{cai2012smcure}, appears to be the only alternative split-population/cure rate duration model implementation in \proglang{R}. It implements semi-parametric proportional hazards and accelerated failure time cure models using methods outlined in \citep{peng2003fitting} and \citep{zhang2007new}. The semi-parametric estimation of the hazard function shape requires no assumption about its shape, which can be difficult in practice to empirically evaluate, as the authors of \pkg{smcure} discuss. However, \pkg{spduration} offers two advantages over \pkg{smcure}. First, it is much less limited in practical application as it allows for the inclusion of time-varying covariates. Second, it features more post-estimation methods, including those discussed above to create and evaluate model predictions.  
 
-Furthermore, \proglang{Stata} implements cure models similar to our own, and which can handle time-varying covariates, but this is of course of limited appeal to \proglang{R} users. 
+Finally, \proglang{Stata} implements cure models similar to our own, and which can handle time-varying covariates, but this is of course of limited appeal to \proglang{R} users. 
 
 \section{Conclusion}
 
