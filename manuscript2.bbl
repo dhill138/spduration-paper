@@ -1,4 +1,4 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{30}
 \newcommand{\enquote}[1]{``#1''}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
@@ -46,6 +46,12 @@ Boag JW (1949).
 \newblock \emph{Journal of the Royal Statistical Society B}, \textbf{11}(1),
   15--53.
 
+\bibitem[{Buxton(2013)}]{buxton2013cureregr}
+Buxton A (2013).
+\newblock \enquote{CUREREGR: Stata module to estimate parametric cure
+  regression.}
+\newblock \urlprefix\url{http://EconPapers.repec.org/RePEc:boc:bocode:s446901}.
+
 \bibitem[{Cai \emph{et~al.}(2012{\natexlab{a}})Cai, Zou, Peng, and
   Zhang}]{cai2012smcure}
 Cai C, Zou Y, Peng Y, Zhang J (2012{\natexlab{a}}).
@@ -92,6 +98,12 @@ Forster M, Jones AM (2001).
 \newblock \emph{Journal of the Royal Statistical Society A}, \textbf{164}(3),
   517--547.
 
+\bibitem[{Garibotti and Tsodikov(2010)}]{garibotti2010nltm}
+Garibotti G, Tsodikov A (2010).
+\newblock \emph{\pkg{nltm}: Nonlinear Transformation Models}.
+\newblock \proglang{R}~package version~1.4.1,
+  \urlprefix\url{https://cran.r-project.org/src/contrib/Archive/nltm/}.
+
 \bibitem[{Greenhill \emph{et~al.}(2011)Greenhill, Ward, and
   Sacks}]{greenhill2011separation}
 Greenhill B, Ward MD, Sacks A (2011).
@@ -110,11 +122,21 @@ King G, Zeng L (2001{\natexlab{b}}).
 \newblock \enquote{Logistic Regression in Rare Events Data.}
 \newblock \emph{Political analysis}, \textbf{9}(2), 137--163.
 
+\bibitem[{Lambert(2007)}]{lambert2007modeling}
+Lambert PC (2007).
+\newblock \enquote{Modeling of the cure fraction in survival studies.}
+\newblock \emph{Stata Journal}, \textbf{7}(3), 351.
+
 \bibitem[{Peng(2003)}]{peng2003fitting}
 Peng Y (2003).
 \newblock \enquote{Fitting semiparametric cure models.}
 \newblock \emph{Computational statistics \& data analysis}, \textbf{41}(3),
   481--490.
+
+\bibitem[{Peng \emph{et~al.}(1998)Peng, Dear, and Denham}]{peng1998generalized}
+Peng Y, Dear KB, Denham J (1998).
+\newblock \enquote{A generalized F mixture model for cure rate estimation.}
+\newblock \emph{Statistics in medicine}, \textbf{17}(8), 813--830.
 
 \bibitem[{\proglang{R} Core~Team(2016)}]{rstats2016}
 \proglang{R} Core~Team (2016).
@@ -144,6 +166,19 @@ Thernau TM (2015).
 \newblock \emph{A Package for Survival Analysis in \proglang{S}}.
 \newblock \proglang{R}~package version~2.38,
   \urlprefix\url{http://CRAN.R-project.org/package=survival}.
+
+\bibitem[{Tsodikov(2003)}]{tsodikov2003semiparametric}
+Tsodikov A (2003).
+\newblock \enquote{Semiparametric models: a generalized self-consistency
+  approach.}
+\newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, \textbf{65}(3), 759--774.
+
+\bibitem[{Tsodikov and Garibotti(2007)}]{tsodikov2007profile}
+Tsodikov A, Garibotti G (2007).
+\newblock \enquote{Profile information matrix for nonlinear transformation
+  models.}
+\newblock \emph{Lifetime data analysis}, \textbf{13}(1), 139--159.
 
 \bibitem[{Ward \emph{et~al.}(2013)Ward, Metternich, Dorff, Gallop, Hollenbach,
   Schultz, and Weschle}]{ward2013learning}
