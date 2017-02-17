@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: spdurarXiv.aux
+The style file: authordate3.bst
+Database file #1: spdur.bib.bib
+You've used 28 entries,
+            2453 wiz_defined-function locations,
+            745 strings with 8623 characters,
+and the built_in function-call counts, 11444 in all, are:
+= -- 1138
+> -- 374
+< -- 95
++ -- 122
+- -- 106
+* -- 1060
+:= -- 1835
+add.period$ -- 111
+call.type$ -- 28
+change.case$ -- 179
+chr.to.int$ -- 26
+cite$ -- 28
+duplicate$ -- 428
+empty$ -- 854
+format.name$ -- 149
+if$ -- 2281
+int.to.chr$ -- 3
+int.to.str$ -- 0
+missing$ -- 24
+newline$ -- 142
+num.names$ -- 84
+pop$ -- 159
+preamble$ -- 1
+purify$ -- 207
+quote$ -- 0
+skip$ -- 411
+stack$ -- 0
+substring$ -- 838
+swap$ -- 82
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 222
+warning$ -- 0
+while$ -- 99
+width$ -- 0
+write$ -- 358
