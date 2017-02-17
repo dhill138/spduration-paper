@@ -1,0 +1,164 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Bagozzi et~al.]{Bagozzi, Hill, Moore \harvardand\
+  Mukherjee}{2015}{bagozzi2015modeling}
+Bagozzi, Benjamin~E., Daniel~W. Hill, Will~H. Moore \harvardand\ Bumba
+  Mukherjee. 2015.
+\newblock ``Modeling Two Types of Peace The Zero-inflated Ordered Probit (ZiOP)
+  Model in Conflict Research.'' {\em Journal of Conflict Resolution}
+  59(4):728--752.
+
+\harvarditem[Beger, Dorff \harvardand\ Ward]{Beger, Dorff \harvardand\
+  Ward}{2014}{beger2014ensemble}
+Beger, Andreas, Cassy~L. Dorff \harvardand\ Michael~D. Ward. 2014.
+\newblock ``Ensemble Forecasting of Irregular Leadership Change.'' {\em
+  Research \& Politics} 1(3):1--7.
+
+\harvarditem{Belkin \harvardand\ Schofer}{2003}{belkin2003toward}
+Belkin, Aaron \harvardand\ Evan Schofer. 2003.
+\newblock ``Toward a Structural Understanding of Coup Risk.'' {\em Journal of
+  Conflict Resolution} 47(5):594--620.
+
+\harvarditem{Berkson \harvardand\ Gage}{1952}{berkson1952survival}
+Berkson, Joseph \harvardand\ Robert~P. Gage. 1952.
+\newblock ``Survival Curve for Cancer Patients Following Treatment.'' {\em
+  Journal of the American Statistical Association} 47(259):501--515.
+
+\harvarditem{Boag}{1949}{boag1949maximum}
+Boag, John~W. 1949.
+\newblock ``Maximum Likelihood Estimates of the Proportion of Patients Cured by
+  Cancer Therapy.'' {\em Journal of the Royal Statistical Society B}
+  11(1):15--53.
+
+\harvarditem{Buxton}{2013}{buxton2013cureregr}
+Buxton, Allen. 2013.
+\newblock ``CUREREGR: Stata Module to Estimate Parametric Cure Regression.''.
+\newline\harvardurl{http://EconPapers.repec.org/RePEc:boc:bocode:s446901}
+
+\harvarditem[Cai et~al.]{Cai, Zou, Peng \harvardand\ Zhang}{2012{\em
+  a}}{cai2012smcure}
+Cai, Chao, Yubo Zou, Yingwei Peng \harvardand\ Jiajia Zhang. 2012{\em a}.
+\newblock ``\texttt{smcure}: An $\mathcal{R}$-Package for Estimating
+  Semiparametric Mixture Cure Models.'' {\em Computer Methods and Programs in
+  Biomedicine} 108(3):1255--1260.
+
+\harvarditem[Cai et~al.]{Cai, Zou, Peng \harvardand\ Zhang}{2012{\em
+  b}}{cai2012smcureR}
+Cai, Chao, Yubo Zou, Yingwei Peng \harvardand\ Jiajia Zhang. 2012{\em b}.
+\newblock {\em \texttt{smcure}: Fit Semiparametric Mixture Cure Models}.
+\newblock $\mathcal{R}$~package version~2.0.
+\newline\harvardurl{https://CRAN.R-project.org/package=smcure}
+
+\harvarditem{Dahl}{2016}{dahl2016xtable}
+Dahl, David~B. 2016.
+\newblock {\em \texttt{xtable}: Export Tables to \texttt{LaTeX} or
+  \texttt{HTML}}.
+\newblock {R}~package version~1.8-2.
+\newline\harvardurl{https://CRAN.R-project.org/package=xtable}
+
+\harvarditem{DeYoung}{2003}{deyoung2003failure}
+DeYoung, Robert. 2003.
+\newblock ``The Failure of New Entrants in Commercial Banking Markets: A
+  Split-Population Duration Analysis.'' {\em Review of Financial Economics}
+  12(1):7--33.
+
+\harvarditem{Douglas \harvardand\ Hariharan}{1994}{douglas1994hazard}
+Douglas, Stratford \harvardand\ Govind Hariharan. 1994.
+\newblock ``The Hazard of Starting Smoking: Estimates From a Split Population
+  Duration Model.'' {\em Journal of Health Economics} 13(2):213--230.
+
+\harvarditem{Fearon \harvardand\ Laitin}{2003}{fearon2003ethnicity}
+Fearon, James~D. \harvardand\ David~D. Laitin. 2003.
+\newblock ``Ethnicity, Insurgency, and Civil War.'' {\em American Political
+  Science Review} 97(1):75--90.
+
+\harvarditem{Forster \harvardand\ Jones}{2001}{forster2001role}
+Forster, Martin \harvardand\ Andrew~M. Jones. 2001.
+\newblock ``The Role of Tobacco Taxes in Starting and Quitting Smoking:
+  Duration Analysis of British Data.'' {\em Journal of the Royal Statistical
+  Society A} 164(3):517--547.
+
+\harvarditem{Garibotti \harvardand\ Tsodikov}{2010}{garibotti2010nltm}
+Garibotti, Gilda \harvardand\ Alexander Tsodikov. 2010.
+\newblock {\em \texttt{nltm}: Nonlinear Transformation Models}.
+\newblock $\mathcal{R}$~package version~1.4.1.
+\newline\harvardurl{https://cran.r-project.org/src/contrib/Archive/nltm/}
+
+\harvarditem[Greenhill, Ward \harvardand\ Sacks]{Greenhill, Ward \harvardand\
+  Sacks}{2011}{greenhill2011separation}
+Greenhill, Brian, Michael~D. Ward \harvardand\ Audrey Sacks. 2011.
+\newblock ``The Separation Plot: A New Visual Method for Evaluating the Fit of
+  Binary Models.'' {\em American Journal of Political Science} 55(4):991--1002.
+
+\harvarditem{King \harvardand\ Zeng}{2001{\em a}}{king2001explaining}
+King, Gary \harvardand\ Langche Zeng. 2001{\em a}.
+\newblock ``Explaining Rare Events in International Relations.'' {\em
+  International Organization} 55(03):693--715.
+
+\harvarditem{King \harvardand\ Zeng}{2001{\em b}}{king2001logistic}
+King, Gary \harvardand\ Langche Zeng. 2001{\em b}.
+\newblock ``Logistic Regression in Rare Events Data.'' {\em Political analysis}
+  9(2):137--163.
+
+\harvarditem{Lambert}{2007}{lambert2007modeling}
+Lambert, Paul~C. 2007.
+\newblock ``Modeling of the Cure Fraction in Survival Studies.'' {\em Stata
+  Journal} 7(3):351.
+
+\harvarditem{Peng}{2003}{peng2003fitting}
+Peng, Yingwei. 2003.
+\newblock ``Fitting Semiparametric Cure Models.'' {\em Computational Statistics
+  \& Data Analysis} 41(3):481--490.
+
+\harvarditem[Peng, Dear \harvardand\ Denham]{Peng, Dear \harvardand\
+  Denham}{1998}{peng1998generalized}
+Peng, Yingwei, Keith~BG Dear \harvardand\ JW Denham. 1998.
+\newblock ``A Generalized F Mixture Model for Cure Rate Estimation.'' {\em
+  Statistics in Medicine} 17(8):813--830.
+
+\harvarditem{Schmidt \harvardand\ Witte}{1989}{schmidt1989predicting}
+Schmidt, Peter \harvardand\ Ann~Dryden Witte. 1989.
+\newblock ``Predicting Criminal Recidivism Using Split Population Survival Time
+  Models.'' {\em Journal of Econometrics} 40(1):141--159.
+
+\harvarditem{Svolik}{2008}{svolik2008authoritarian}
+Svolik, Milan. 2008.
+\newblock ``Authoritarian Reversals and Democratic Consolidation.'' {\em
+  American Political Science Review} 102(2):153--168.
+
+\harvarditem{Thernau}{2000}{thernau2000modeling}
+Thernau, Terry~M. 2000.
+\newblock {\em Modeling Survival Data: Extending the Cox Model}.
+\newblock New York:  Springer.
+
+\harvarditem{Thernau}{2015}{thernau2015survival}
+Thernau, Terry~M. 2015.
+\newblock {\em A Package for Survival Analysis in $\mathcal{S}$}.
+\newblock {R}~package version~2.38.
+\newline\harvardurl{http://CRAN.R-project.org/package=survival}
+
+\harvarditem{Tsodikov}{2003}{tsodikov2003semiparametric}
+Tsodikov, Alex. 2003.
+\newblock ``Semiparametric Models: a Generalized Self-consistency Approach.''
+  {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)} 65(3):759--774.
+
+\harvarditem{Tsodikov \harvardand\ Garibotti}{2007}{tsodikov2007profile}
+Tsodikov, Alexander \harvardand\ Gilda Garibotti. 2007.
+\newblock ``Profile Information Matrix for Nonlinear Transformation Models.''
+  {\em Lifetime Data Analysis} 13(1):139--159.
+
+\harvarditem[Ward et~al.]{Ward, Metternich, Dorff, Gallop, Hollenbach, Schultz
+  \harvardand\ Weschle}{2013}{ward2013learning}
+Ward, Michael~D., Nils~W. Metternich, Cassy~L. Dorff, Max Gallop, Florian~M.
+  Hollenbach, Anna Schultz \harvardand\ Simon Weschle. 2013.
+\newblock ``Learning from the Past and Stepping into the Future: Toward a New
+  Generation of Conflict Prediction.'' {\em International Studies Review}
+  15(4):473--490.
+
+\harvarditem{Zhang \harvardand\ Peng}{2007}{zhang2007new}
+Zhang, Jiajia \harvardand\ Yingwei Peng. 2007.
+\newblock ``A New Estimation Method for the Semiparametric Accelerated Failure
+  Time Mixture Cure Model.'' {\em Statistics in Medicine} 26(16):3157--3171.
+
+\end{thebibliography}
