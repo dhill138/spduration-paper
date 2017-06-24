@@ -45,7 +45,12 @@ some other characteristic that makes it impossible for them to attract
 the disease. In this instance we have two underlying populations: an at
 risk population and an immune one. If the immune population is
 relatively large, estimates using a standard duration model will be
-biased and predictions inaccurate.
+biased and predictions inaccurate. 
+
+Additionally, risk factors might change over time which requires estimators 
+that can account for such dynamics. We therefore present a split-population 
+estimator that allows for the inclusion of time-varying covariates, which is an 
+important distinction to other R implementations of split-population or cure models.
 
 \section{Immune populations and inference of duration
 processes}
