@@ -1,20 +1,20 @@
 % !TeX root = RJwrapper.tex
 \title{Splitting It Up: The \pkg{spduration} Split-Population Duration
-Regression Package}
+Regression Package for Time-varying Covariates}
 \author{by Andreas Beger, Daniel W. Hill, Jr., Nils. W. Metternich, Shahryar Minhas, and Michael D. Ward}
 
 \maketitle
 
 \abstract{
 We present an implementation of split-population duration regression in
-the \CRANpkg{spduration} \citep{beger2016spduration} package for {\sf R} \citep{rstats2016} and an application to data on military
-coups. The statistical model accounts for units that are immune to a
+the \CRANpkg{spduration} \citep{beger2016spduration} package for {\sf R} \citep{rstats2016} that allows for time-varying covariates. The statistical model accounts for units that are immune to a
 certain outcome and not part of the duration process the researcher is
 primarily interested in. We provide insights that if immune units exist,
 we can significantly increase the predictive performance compared to
 standard duration models. The package includes estimation and several
 post-estimation methods for split-population Weibull and Loglogistic
-models.
+models. We provide an empirical application to data on military
+coups.
 }
 
 \section{Introduction}
@@ -710,10 +710,12 @@ theorists maps onto the model intuition.
 
 \address{Nils W. Metternich\\
   Department of Political Science\\
-  School of Public Policy, University College London\\
+University College London\\
   London\\
   United Kingdom\\
-  \email{n.metternich@ucl.ac.uk}}
+  \email{n.metternich@ucl.ac.uk}\\
+  Nils W. Metternich acknowledges support from the Economic and Social Research Council (ES/L011506/1)}
+  
 
 \address{Shahryar Minhas\\
   Department of Political Science\\
