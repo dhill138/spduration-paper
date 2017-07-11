@@ -7,7 +7,7 @@ Regression Package for Time-varying Covariates}
 
 \abstract{
 We present an implementation of split-population duration regression in
-the \CRANpkg{spduration} \citep{beger2016spduration} package for {\sf R} \citep{rstats2016} that allows for time-varying covariates. The statistical model accounts for units that are immune to a
+the \CRANpkg{spduration} \citep{beger2016spduration} package for {\sf R} that allows for time-varying covariates. The statistical model accounts for units that are immune to a
 certain outcome and not part of the duration process the researcher is
 primarily interested in. We provide insights that if immune units exist,
 we can significantly increase the predictive performance compared to
@@ -171,18 +171,18 @@ restrict covariates in the logit risk model to slow-moving, stable
 covariates in order to produce stable risk estimates for subjects.
 
 The last component to complete the likelihood is the choice of a
-distribution for the shape of the hazard rate. The \CRANpkg{spduration}
+distribution for the shape of the hazard rate. The \pkg{spduration}
 package implements two hazard rate shapes, Weibull and log-logistic:
 
 \begin{eqnarray*}
 \textrm{Weibull} \\
- f(t) & = & \alpha \lambda (\lambda t)^{\alpha - 1} e^{-(\lambda t)^\alpha} \\
-  S(t) & = & e^{ -(\lambda t )^\alpha } \\
- h(t) & = & \alpha \lambda (\lambda t)^{\alpha-1} \\
+ f(t) & = & \alpha \lambda \left(\lambda t \right)^{\alpha - 1} e^{-\left(\lambda t \right)^\alpha} \\
+  S(t) & = & e^{ -\left(\lambda t \right)^\alpha } \\
+ h(t) & = & \alpha \lambda \left(\lambda t \right)^{\alpha-1} \\
 \textrm{Log-logistic} \\
- f(t) & = & \frac{ \alpha \lambda (\lambda t)^{\alpha-1} }{ (1 + (\lambda t)^\alpha)^2 } \\
- S(t) & = & \frac{1}{ 1+  (\lambda t)^\alpha }  \\
- h(t) & = & \frac{ \alpha \lambda (\lambda t)^{\alpha-1} }{ 1+  (\lambda t)^\alpha }
+ f(t) & = & \frac{ \alpha \lambda \left(\lambda t \right)^{\alpha-1} }{ \left(1 + (\lambda t)^\alpha \right)^2 } \\
+ S(t) & = & \frac{1}{ 1+  \left(\lambda t \right)^\alpha }  \\
+ h(t) & = & \frac{ \alpha \lambda \left(\lambda t \right)^{\alpha-1} }{ 1+  \left(\lambda t \right)^\alpha }
 \end{eqnarray*}
 
 Where \(\lambda = e^{-x_i\beta}\) is a parameter of covariates. The
@@ -195,8 +195,8 @@ conditional hazard \(h(t, \pi)\), where both the risk/cure probabilities
 and hazard are conditional on survival to time \(t\):
 
 \begin{eqnarray}
-h(t, \pi) = \frac{f(t, \pi)}{S(t, \pi)} & = & \frac{ \pi(t) \times f(t) }{ (1-\pi(t)) + \pi(t) \times S(t) } \\
- \pi(t) & = & \frac{ 1-\pi }{ S(t) + (1-\pi) (1 - S(t)) }
+h \left(t, \pi \right) = \frac{f \left(t, \pi \right)}{S \left(t, \pi \right)} & = & \frac{ \pi \left(t \right) \times f \left(t \right) }{ \left(1-\pi \left(t \right) \right) + \pi \left(t \right) \times S \left(t \right) } \\
+ \pi \left(t \right) & = & \frac{ 1-\pi }{ S \left(t \right) + \left(1-\pi \right) \left(1 - S \left(t \right) \right) }
 \end{eqnarray}
 
 For a given unconditional risk rate \(\pi\), the probability that a
@@ -654,9 +654,9 @@ future information in another data partition.
 
 The \CRANpkg{survival} library \citep{thernau2000modeling, thernau2015survival}, arguably the most well-established library for survival and event history analysis in {\sf R}, allows for the estimation of a wide variety of semi-, non-, and parametric survival models, and provides facilities for handling and descriptive summaries of survival and event history data. It does not include cure rate or split-population mixture models of the type we have implemented though.
 
-One useful extension of our project in the future would be to integrate and adapt the \code{Surv} class for survival data in \CRANpkg{survival} to the \CRANpkg{spduration} library. This would require some modification of the class as our model also requires information on the risk status of spells, but would give access to the much broader functionality, especially for descriptive summaries of data, in the \CRANpkg{survival} library. 
+One useful extension of our project in the future would be to integrate and adapt the \code{Surv} class for survival data in \pkg{survival} to the \pkg{spduration} library. This would require some modification of the class as our model also requires information on the risk status of spells, but would give access to the much broader functionality, especially for descriptive summaries of data, in the \pkg{survival} library. 
 
-Other currently available {\sf R} routines for estimation of split-population/cure rate duration models include the packages \CRANpkg{smcure}  \citep{cai2012smcureR}, described in \citet{cai2012smcure}, and \pkg{nltm} \citep{garibotti2010nltm}. \CRANpkg{smcure} implements semi-parametric proportional hazards and accelerated failure time cure models using estimation procedures presented in \citet{peng2003fitting} and \citet{zhang2007new}.\footnote{There is also the older \pkg{gfcure} package, which estimates the parametric accelerated failure time cure model discussed in \citet{peng1998generalized}. A version for Windows is available at \url{http://post.queensu.ca/~pengp/software.html}.} The package \pkg{nltm} will estimate a semi-parametric proportional hazard cure model, and a number of other survival models, using the approach developed in \citet{tsodikov2003semiparametric,tsodikov2007profile}. Semi-parametric estimation of the hazard function is attractive because it requires no assumption about its shape, and such assumptions can be difficult in practice to empirically evaluate. The main advantage \CRANpkg{spduration} offers is the ability to include time varying covariates, which gives it a broader range of practical applications, as \CRANpkg{smcure} and \pkg{nltm} will only accommodate case-based data. \CRANpkg{spduration} also features more post-estimation methods than alternative packages, including those discussed above to create and evaluate model predictions.  
+Other currently available {\sf R} routines for estimation of split-population/cure rate duration models include the packages \CRANpkg{smcure}  \citep{cai2012smcureR}, described in \citet{cai2012smcure}, and \pkg{nltm} \citep{garibotti2010nltm}. \pkg{smcure} implements semi-parametric proportional hazards and accelerated failure time cure models using estimation procedures presented in \citet{peng2003fitting} and \citet{zhang2007new}.\footnote{There is also the older \pkg{gfcure} package, which estimates the parametric accelerated failure time cure model discussed in \citet{peng1998generalized}. A version for Windows is available at \url{http://post.queensu.ca/~pengp/software.html}.} The package \pkg{nltm} will estimate a semi-parametric proportional hazard cure model, and a number of other survival models, using the approach developed in \citet{tsodikov2003semiparametric,tsodikov2007profile}. Semi-parametric estimation of the hazard function is attractive because it requires no assumption about its shape, and such assumptions can be difficult in practice to empirically evaluate. The main advantage \pkg{spduration} offers is the ability to include time varying covariates, which gives it a broader range of practical applications, as \pkg{smcure} and \pkg{nltm} will only accommodate case-based data. \pkg{spduration} also features more post-estimation methods than alternative packages, including those discussed above to create and evaluate model predictions.  
 
 %Finally, there are {\sf Stata} routines for implementing cure models \citep[see, e.g.,][]{lambert2007modeling,buxton2013cureregr}, some of which can handle time-varying covariates, but this is of course of limited appeal to {\sf R} users. 
 
@@ -699,29 +699,26 @@ is a particularly clear illustration of how well the language of
 theorists maps onto the model intuition.
 
 \bibliography{beger-hill-metternich-minhas-ward}
-
+\newpage
 \address{Andreas Beger\\
-  Ward Associates\\
-  Tallinn\\
-  Estonia\\
+  Predictive Heuristics\\
   \email{adbeger@gmail.com}}
 
 \address{Daniel W. Hill, Jr.\\
   Department of International Affairs\\
-  School of Public and International Affairs, University of Georgia\\
-  Candler Hall, Athens GA 30602\\
+  University of Georgia\\
+  Athens, GA\\
   United States of America\\
   \email{dwhill@uga.edu}}
 
 \address{Nils W. Metternich\\
   Department of Political Science\\
-University College London\\
+  University College London\\
   London\\
   United Kingdom\\
   \email{n.metternich@ucl.ac.uk}\\
   Nils W. Metternich acknowledges support from the Economic and Social Research Council (ES/L011506/1)}
   
-
 \address{Shahryar Minhas\\
   Department of Political Science\\
   Duke University\\
