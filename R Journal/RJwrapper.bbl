@@ -1,0 +1,195 @@
+\begin{thebibliography}{28}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bagozzi et~al.(2015)Bagozzi, Hill, Moore, and
+  Mukherjee]{bagozzi2015modeling}
+B.~E. Bagozzi, D.~W. Hill, W.~H. Moore, and B.~Mukherjee.
+\newblock Modeling two types of peace the zero-inflated ordered probit (ziop)
+  model in conflict research.
+\newblock \emph{Journal of Conflict Resolution}, 59\penalty0 (4):\penalty0
+  728--752, 2015.
+
+\bibitem[Beger et~al.(2014)Beger, Dorff, and Ward]{beger2014ensemble}
+A.~Beger, C.~L. Dorff, and M.~D. Ward.
+\newblock Ensemble forecasting of irregular leadership change.
+\newblock \emph{Research \& Politics}, 1\penalty0 (3):\penalty0 1--7, 2014.
+
+\bibitem[Beger et~al.(2017)Beger, Chiba, Hill, Metternich, and
+  Minhas]{beger2016spduration}
+A.~Beger, D.~Chiba, D.~Hill, N.~Metternich, and S.~Minhas.
+\newblock \emph{\pkg{spduration}: Split-population Duration (Cure) Regression},
+  2017.
+\newblock URL \url{https://CRAN.R-project.org/package=spduration}.
+\newblock {\sf R}~package version~0.16.0.
+
+\bibitem[Belkin and Schofer(2003)]{belkin2003toward}
+A.~Belkin and E.~Schofer.
+\newblock Toward a structural understanding of coup risk.
+\newblock \emph{Journal of Conflict Resolution}, 47\penalty0 (5):\penalty0
+  594--620, 2003.
+
+\bibitem[Berkson and Gage(1952)]{berkson1952survival}
+J.~Berkson and R.~P. Gage.
+\newblock Survival curve for cancer patients following treatment.
+\newblock \emph{Journal of the American Statistical Association}, 47\penalty0
+  (259):\penalty0 501--515, 1952.
+
+\bibitem[Boag(1949)]{boag1949maximum}
+J.~W. Boag.
+\newblock Maximum likelihood estimates of the proportion of patients cured by
+  cancer therapy.
+\newblock \emph{Journal of the Royal Statistical Society B}, 11\penalty0
+  (1):\penalty0 15--53, 1949.
+
+\bibitem[Cai et~al.(2012{\natexlab{a}})Cai, Zou, Peng, and
+  Zhang]{cai2012smcure}
+C.~Cai, Y.~Zou, Y.~Peng, and J.~Zhang.
+\newblock \pkg{smcure}: An {\sf r}-package for estimating semiparametric
+  mixture cure models.
+\newblock \emph{Computer Methods and Programs in Biomedicine}, 108\penalty0
+  (3):\penalty0 1255--1260, 2012{\natexlab{a}}.
+
+\bibitem[Cai et~al.(2012{\natexlab{b}})Cai, Zou, Peng, and
+  Zhang]{cai2012smcureR}
+C.~Cai, Y.~Zou, Y.~Peng, and J.~Zhang.
+\newblock \emph{\pkg{smcure}: Fit Semiparametric Mixture Cure Models},
+  2012{\natexlab{b}}.
+\newblock URL \url{https://CRAN.R-project.org/package=smcure}.
+\newblock {\sf R}~package version~2.0.
+
+\bibitem[Dahl(2016)]{dahl2016xtable}
+D.~B. Dahl.
+\newblock \emph{\pkg{xtable}: Export Tables to {\sf LaTeX} or {\sf HTML}},
+  2016.
+\newblock URL \url{https://CRAN.R-project.org/package=xtable}.
+\newblock {\sf R}~package version~1.8-2.
+
+\bibitem[DeYoung(2003)]{deyoung2003failure}
+R.~DeYoung.
+\newblock The failure of new entrants in commercial banking markets: A
+  split-population duration analysis.
+\newblock \emph{Review of Financial Economics}, 12\penalty0 (1):\penalty0
+  7--33, 2003.
+
+\bibitem[Douglas and Hariharan(1994)]{douglas1994hazard}
+S.~Douglas and G.~Hariharan.
+\newblock The hazard of starting smoking: Estimates from a split population
+  duration model.
+\newblock \emph{Journal of Health Economics}, 13\penalty0 (2):\penalty0
+  213--230, 1994.
+
+\bibitem[Fearon and Laitin(2003)]{fearon2003ethnicity}
+J.~D. Fearon and D.~D. Laitin.
+\newblock Ethnicity, insurgency, and civil war.
+\newblock \emph{American Political Science Review}, 97\penalty0 (1):\penalty0
+  75--90, 2003.
+
+\bibitem[Forster and Jones(2001)]{forster2001role}
+M.~Forster and A.~M. Jones.
+\newblock The role of tobacco taxes in starting and quitting smoking: Duration
+  analysis of british data.
+\newblock \emph{Journal of the Royal Statistical Society A}, 164\penalty0
+  (3):\penalty0 517--547, 2001.
+
+\bibitem[Garibotti and Tsodikov(2010)]{garibotti2010nltm}
+G.~Garibotti and A.~Tsodikov.
+\newblock \emph{\pkg{nltm}: Nonlinear Transformation Models}, 2010.
+\newblock URL \url{https://cran.r-project.org/src/contrib/Archive/nltm/}.
+\newblock {\sf R}~package version~1.4.1.
+
+\bibitem[Greenhill et~al.(2011)Greenhill, Ward, and
+  Sacks]{greenhill2011separation}
+B.~Greenhill, M.~D. Ward, and A.~Sacks.
+\newblock The separation plot: A new visual method for evaluating the fit of
+  binary models.
+\newblock \emph{American Journal of Political Science}, 55\penalty0
+  (4):\penalty0 991--1002, 2011.
+
+\bibitem[King and Zeng(2001{\natexlab{a}})]{king2001explaining}
+G.~King and L.~Zeng.
+\newblock Explaining rare events in international relations.
+\newblock \emph{International Organization}, 55\penalty0 (03):\penalty0
+  693--715, 2001{\natexlab{a}}.
+
+\bibitem[King and Zeng(2001{\natexlab{b}})]{king2001logistic}
+G.~King and L.~Zeng.
+\newblock Logistic regression in rare events data.
+\newblock \emph{Political analysis}, 9\penalty0 (2):\penalty0 137--163,
+  2001{\natexlab{b}}.
+
+\bibitem[Peng(2003)]{peng2003fitting}
+Y.~Peng.
+\newblock Fitting semiparametric cure models.
+\newblock \emph{Computational Statistics \& Data Analysis}, 41\penalty0
+  (3):\penalty0 481--490, 2003.
+
+\bibitem[Peng et~al.(1998)Peng, Dear, and Denham]{peng1998generalized}
+Y.~Peng, K.~B. Dear, and J.~Denham.
+\newblock A generalized f mixture model for cure rate estimation.
+\newblock \emph{Statistics in Medicine}, 17\penalty0 (8):\penalty0 813--830,
+  1998.
+
+\bibitem[Schmidt and Witte(1989)]{schmidt1989predicting}
+P.~Schmidt and A.~D. Witte.
+\newblock Predicting criminal recidivism using split population survival time
+  models.
+\newblock \emph{Journal of Econometrics}, 40\penalty0 (1):\penalty0 141--159,
+  1989.
+
+\bibitem[Svolik(2008)]{svolik2008authoritarian}
+M.~Svolik.
+\newblock Authoritarian reversals and democratic consolidation.
+\newblock \emph{American Political Science Review}, 102\penalty0 (2):\penalty0
+  153--168, 2008.
+
+\bibitem[Team(2016)]{rstats2016}
+{\sf R}.~C. Team.
+\newblock \emph{{\sf R}: A Language and Environment for Statistical Computing},
+  2016.
+\newblock URL \url{https://www.r-project.org}.
+\newblock {\sf R} Foundation for Statistical Computing, Vienna, Austria.
+
+\bibitem[Thernau(2000)]{thernau2000modeling}
+T.~M. Thernau.
+\newblock \emph{Modeling Survival Data: Extending the Cox Model}.
+\newblock Springer, New York, 2000.
+
+\bibitem[Thernau(2015)]{thernau2015survival}
+T.~M. Thernau.
+\newblock \emph{A Package for Survival Analysis in {\sf S}}, 2015.
+\newblock URL \url{http://CRAN.R-project.org/package=survival}.
+\newblock {\sf R}~package version~2.38.
+
+\bibitem[Tsodikov(2003)]{tsodikov2003semiparametric}
+A.~Tsodikov.
+\newblock Semiparametric models: a generalized self-consistency approach.
+\newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 65\penalty0 (3):\penalty0 759--774, 2003.
+
+\bibitem[Tsodikov and Garibotti(2007)]{tsodikov2007profile}
+A.~Tsodikov and G.~Garibotti.
+\newblock Profile information matrix for nonlinear transformation models.
+\newblock \emph{Lifetime Data Analysis}, 13\penalty0 (1):\penalty0 139--159,
+  2007.
+
+\bibitem[Ward et~al.(2013)Ward, Metternich, Dorff, Gallop, Hollenbach, Schultz,
+  and Weschle]{ward2013learning}
+M.~D. Ward, N.~W. Metternich, C.~L. Dorff, M.~Gallop, F.~M. Hollenbach,
+  A.~Schultz, and S.~Weschle.
+\newblock Learning from the past and stepping into the future: Toward a new
+  generation of conflict prediction.
+\newblock \emph{International Studies Review}, 15\penalty0 (4):\penalty0
+  473--490, 2013.
+
+\bibitem[Zhang and Peng(2007)]{zhang2007new}
+J.~Zhang and Y.~Peng.
+\newblock A new estimation method for the semiparametric accelerated failure
+  time mixture cure model.
+\newblock \emph{Statistics in Medicine}, 26\penalty0 (16):\penalty0 3157--3171,
+  2007.
+
+\end{thebibliography}
