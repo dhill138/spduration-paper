@@ -11,3 +11,5 @@ manuscript_files/*
 *.synctex.gz
 
 takeouts.R
+
+.DS_Store
