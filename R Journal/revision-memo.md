@@ -3,18 +3,20 @@
 
 
 -[ ] Check package to paper documentation consistency
--[ ] default value for spdur distribution? Document in paper and roxygen
--[ ] Can Table 1 include more variables? at risk
--[ ] Add method used to estimate parameter variance
+-[x] default value for spdur distribution? Document in paper and roxygen
+-[x] Can Table 1 include more variables? at risk
+-[x] Add method used to estimate parameter variance
 -[ ] Short discussion of different cure rates and utility of split approach (simulations)
 
 ## Reviewer comments
 
 > (1) check the consistence between the R documentation of the package and the paper. (e.g. the # of observations and variables on manual are not consistent with what it’s described in paper) 
 
+Updated package documentation for `data(bscoup); ?bscoup` to mention correct number of rows and columns in data. 
+
 > (2) for ‘spdur’ function, does user need to specify ‘distr’ or the default is Weibull? The first example ‘weib_model’ didn’t specify distribution but the manual doesn’t mention the default value. 
 
-The "distr" argument must be specified; we have updated the paper examples to correct this error. 
+The "distr" argument defaults to "weibull"; we have updated the package documentation to mention that, but also fixed the paper examples to explicitly use the "distr" option without relying on default behavior. 
 
 > (3) Can Table 1 include more variables? e.g. atrisk was included in the model but not listed in the table. I think listing those variables would help users better understand the data structure. 
 
@@ -22,4 +24,9 @@ We added several of the other variables added to the training data frame by `add
 
 > (4) add the method that was used to estimate the parameter variance. 
 
+We added this to the text:
+
+"The estimates are based on maximum likelihood estimation and standard errors are derived using the Hessian matrix of the optimization results."
+
 > (5) because the paper does not include any simulation results, would a short description of the performance of the split population model for different ‘cure’ rates enhance users’ confidence in using this package to re-analyze their data.
+

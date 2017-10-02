@@ -287,13 +287,16 @@ The data are documented in \samp{?bscoup}, which also gives a reference to the s
   - attr(*, "label.table")=List of 1
   ..$ hadcoup: Named int  0 1
   .. ..- attr(*, "names")= chr  "no" "yes"
+\end{example}
+
+Altogether the data include 290 coups, which makes for a positive rate of slightly more than 5\% of all observations. 
+
+\begin{example}
   bscoup$coup <- ifelse(bscoup$coup == "yes", 1, 0)
   table(bscoup$coup)
   0    1
   5173  290 
 \end{example}
-
-Altogether the data include 290 coups, which makes for a positive rate of slightly more than 5\% of all observations. 
 
 Before we can estimate a split-population duration model with the data, we need to add several variables that capture the survival characteristics of the data.
 
@@ -369,7 +372,7 @@ Countries can experience distinct coups in successive years.
 
 The \code{spdur} function is the primary function in the package and
 produces a regression model object of class \code{spdur} which can then
-be used with further methods. We begin by fitting first a Weibull and
+be used with further methods. We begin by fitting first a Weibull (the default) and
 then a log-logistic split-population duration model using the coups
 data, including the measure of coup risk in the logit (risk) equation.
 
@@ -378,7 +381,7 @@ data, including the measure of coup risk in the logit (risk) equation.
   +    duration ~ milreg + instab + regconf,
   +    atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + 
   +      camerica,
-  +    data = bscoup, distr = "weib", silent = TRUE)
+  +    data = bscoup, distr = "weibull", silent = TRUE)
 
   loglog_model <- spdur(
   +    duration ~ milreg + instab + regconf,
@@ -389,7 +392,7 @@ data, including the measure of coup risk in the logit (risk) equation.
 
 Using the \code{summary} function on either model object will produce
 standard output showing the model formula, estimates for the duration
-and risk equations, and test statistics with \(p\)-values. These can be
+and risk equations, and test statistics with \(p\)-values. The estimates are based on maximum likelihood estimation and standard errors are derived using the Hessian matrix of the optimization results. The \code{spdur} parameter estimates can be
 exported by calling \code{xtable}\citep[see][]{dahl2016xtable} directly on the \code{spdur} object to
 produce Table 2.
 
@@ -700,7 +703,9 @@ theorists maps onto the model intuition.
 \bibliography{beger-hill-metternich-minhas-ward}
 \newpage
 \address{Andreas Beger\\
-  Predictive Heuristics\\
+  Ward Associates / Predictive Heuristics\\
+  Tallinn\\
+  Estonia\\
   \email{adbeger@gmail.com}}
 
 \address{Daniel W. Hill, Jr.\\
