@@ -298,6 +298,7 @@ Altogether the data include 290 coups, which makes for a positive rate of slight
 Before we can estimate a split-population duration model with the data, we need to add several variables that capture the survival characteristics of the data.
 
 \begin{example}
+  bscoup$coup <- ifelse(bscoup$coup=="yes", 1, 0)
   bscoup <- add_duration(bscoup, "coup", unitID = "countryid", 
   +    tID = "year", freq = "year", ongoing = FALSE)
   Warning message:
@@ -377,7 +378,7 @@ data, including the measure of coup risk in the logit (risk) equation.
   +    duration ~ milreg + instab + regconf,
   +    atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + 
   +      camerica,
-  +    data = bscoup, silent = TRUE)
+  +    data = bscoup, distr = "weib", silent = TRUE)
 
   loglog_model <- spdur(
   +    duration ~ milreg + instab + regconf,
@@ -572,7 +573,7 @@ predictions from these models for the test data, using
   +    duration ~ milreg + instab + regconf,
   +    atrisk ~ couprisk + wealth + milreg + rwar + regconf + samerica + 
   +      camerica,
-  +    data = coup_train, silent = TRUE)
+  +    data = coup_train, distr = "weib", silent = TRUE)
 
   loglog_model2 <- spdur(
   +    duration ~ milreg + instab + regconf,
