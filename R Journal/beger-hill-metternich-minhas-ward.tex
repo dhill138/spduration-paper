@@ -538,7 +538,23 @@ failure, and low probabilities to non-failures.
 Underlying both plotting functions is the \code{predict} function, which
 can be used on an object of class \code{spdur} to generate several kinds
 of predictions, including the probability that an observation is
-``at-risk'' and the probability of failure for a given time period.
+``at-risk'' and the probability of failure for a given time period. By default 
+\code{predict} calculates the conditional hazard, but the probability that an 
+observation is at risk may also be of interest. These models 
+are most appropriate in cases where there is a strong theoretical reason to suspect 
+some units are not at risk, as in the canonical applications (not everyone smokes, 
+some cancer patients are cured, some convicts do not relapse, etc.). Whether 
+an observation is cured or at-risk is ultimately unknowable, but estimating cure probabilities 
+can give users some idea of whether a split-population model is appropriate 
+for their application. Here we use \code{predict} to estimate conditional cure 
+probabilities from the Weibull model. 
+
+\begin{example}
+  bscoup$ccure_prob <- predict(weib_model, type = "conditional cure", 
+  +    newdata = bscoup, na.action = "na.exclude")
+  mean(bscoup$ccure_prob, na.rm = TRUE)
+  [1] 0.4333912
+\end{example}
 
 \subsection{Out-of-sample testing}
 

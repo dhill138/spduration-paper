@@ -1,4 +1,4 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -21,8 +21,7 @@ A.~Beger, C.~L. Dorff, and M.~D. Ward.
 \bibitem[Beger et~al.(2017)Beger, Chiba, Hill, Metternich, and
   Minhas]{beger2016spduration}
 A.~Beger, D.~Chiba, D.~Hill, N.~Metternich, and S.~Minhas.
-\newblock \emph{\pkg{spduration}: Split-population Duration (Cure) Regression},
-  2017.
+\newblock \emph{spduration: Split-population Duration (Cure) Regression}, 2017.
 \newblock URL \url{https://CRAN.R-project.org/package=spduration}.
 \newblock {\sf R}~package version~0.16.0.
 
@@ -48,23 +47,22 @@ J.~W. Boag.
 \bibitem[Cai et~al.(2012{\natexlab{a}})Cai, Zou, Peng, and
   Zhang]{cai2012smcure}
 C.~Cai, Y.~Zou, Y.~Peng, and J.~Zhang.
-\newblock \pkg{smcure}: An {\sf r}-package for estimating semiparametric
-  mixture cure models.
+\newblock smcure: An {\sf r}-package for estimating semiparametric mixture cure
+  models.
 \newblock \emph{Computer Methods and Programs in Biomedicine}, 108\penalty0
   (3):\penalty0 1255--1260, 2012{\natexlab{a}}.
 
 \bibitem[Cai et~al.(2012{\natexlab{b}})Cai, Zou, Peng, and
   Zhang]{cai2012smcureR}
 C.~Cai, Y.~Zou, Y.~Peng, and J.~Zhang.
-\newblock \emph{\pkg{smcure}: Fit Semiparametric Mixture Cure Models},
+\newblock \emph{smcure: Fit Semiparametric Mixture Cure Models},
   2012{\natexlab{b}}.
 \newblock URL \url{https://CRAN.R-project.org/package=smcure}.
 \newblock {\sf R}~package version~2.0.
 
 \bibitem[Dahl(2016)]{dahl2016xtable}
 D.~B. Dahl.
-\newblock \emph{\pkg{xtable}: Export Tables to {\sf LaTeX} or {\sf HTML}},
-  2016.
+\newblock \emph{xtable: Export Tables to {\sf LaTeX} or {\sf HTML}}, 2016.
 \newblock URL \url{https://CRAN.R-project.org/package=xtable}.
 \newblock {\sf R}~package version~1.8-2.
 
@@ -97,7 +95,7 @@ M.~Forster and A.~M. Jones.
 
 \bibitem[Garibotti and Tsodikov(2010)]{garibotti2010nltm}
 G.~Garibotti and A.~Tsodikov.
-\newblock \emph{\pkg{nltm}: Nonlinear Transformation Models}, 2010.
+\newblock \emph{nltm: Nonlinear Transformation Models}, 2010.
 \newblock URL \url{https://cran.r-project.org/src/contrib/Archive/nltm/}.
 \newblock {\sf R}~package version~1.4.1.
 
@@ -145,13 +143,6 @@ M.~Svolik.
 \newblock Authoritarian reversals and democratic consolidation.
 \newblock \emph{American Political Science Review}, 102\penalty0 (2):\penalty0
   153--168, 2008.
-
-\bibitem[Team(2016)]{rstats2016}
-{\sf R}.~C. Team.
-\newblock \emph{{\sf R}: A Language and Environment for Statistical Computing},
-  2016.
-\newblock URL \url{https://www.r-project.org}.
-\newblock {\sf R} Foundation for Statistical Computing, Vienna, Austria.
 
 \bibitem[Thernau(2000)]{thernau2000modeling}
 T.~M. Thernau.

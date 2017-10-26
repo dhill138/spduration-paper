@@ -2,11 +2,11 @@
 ## TODO
 
 
--[ ] Check package to paper documentation consistency
+-[x] Check package to paper documentation consistency
 -[x] default value for spdur distribution? Document in paper and roxygen
 -[x] Can Table 1 include more variables? at risk
 -[x] Add method used to estimate parameter variance
--[ ] Short discussion of different cure rates and utility of split approach (simulations)
+-[x] Short discussion of different cure rates and utility of split approach (simulations)
 
 ## Reviewer comments
 
@@ -30,3 +30,4 @@ We added this to the text:
 
 > (5) because the paper does not include any simulation results, would a short description of the performance of the split population model for different ‘cure’ rates enhance users’ confidence in using this package to re-analyze their data.
 
+We appreciate the suggestion to add discussion of model performance under different cure rates. Unfortunately we were unable to find existing studies that speak to this question for our particular model, and we believe that conducting such simulations would warrant a separate paper. Our intuition about model performance is as follows. When no units are cured, the model may underestimate the hazard relative to a standard model since it assumes censored cases are not at risk. When all cases are cured this would entail a sample of only censored observations, i.e. no failures and thus no variation in one of the response variables the model requires. The more interesting case is where some but not all units are cured. In this case it seems likely that a standard parametric duration model would underestimate the hazard by a larger amount as the proportion of cured observations increases. As such, we think the model is most appropriate in cases where there is a strong theoretical reason to suspect some units are cured, as in the canonical applications of these models (not everyone smokes, some cancer patients are cured, some convicts do not relapse, etc.). We have added some text along these lines to the paper on p. 8. Ultimately we cannot observe the proportion of observations that are cured, and the usefulness of the model is its ability to draw a probabilistic inference about this unobservable process. The model can provide an estimate of the cure probability for each observation, and we have added some example code on p. 8 showing a simple way to estimate cure probabilities using the predict function with an object of class spdur. These estimates should give users an indication of how appropriate the model is for their application, which we note on p. 8.
